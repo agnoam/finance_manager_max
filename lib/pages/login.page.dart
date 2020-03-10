@@ -1,3 +1,4 @@
+import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/widgets/appCard.widgets.dart';
@@ -58,8 +59,13 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text("Login"),
                         onPressed: () async {
                           if(_username.length > 0 && _password.length > 0) {
-                            bool isLogined =  await HttpServices.login(user: User(_username, _password));
-                            print(isLogined ? 'Yay !' : 'Boozzz !');
+                            User logginedUser = 
+                            await HttpServices.login(cred: { 'username': _username, 'password': _password });
+                            
+                            logginedUser != null ? 
+                              Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
+                            : 
+                              Dialogs.showAlert(context, 'There is no data to show');
                           }
                         }
                       ),
