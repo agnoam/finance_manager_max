@@ -1,8 +1,10 @@
-// import 'dart:ffi';
+import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/widgets/constants.widgets.dart';
 import 'package:finance_manager/pages/signup.page.dart';
+
+// Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignupPage()));
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,8 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   void _loginModal(context) {
     showModalBottomSheet(context: context, isScrollControlled: true, builder: (BuildContext bc) {
       return Container(
-        height: MediaQuery.of(context).size.height * .8,
-        child: _buildLogin()
+        // height: MediaQuery.of(context).size.height * .8,
+        child: _buildLogin(),
       );
     });
   }
@@ -95,7 +97,9 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _buildLogin() {
+
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Container(child: Image.asset(
@@ -103,78 +107,83 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.white,
       ),
       body: Stack(
-        children: <Widget>[
-          Container(
-            height: double.infinity, 
-            width: double.infinity, 
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.cyan[400],
-                  Colors.cyan[400],
-                  Colors.cyan[200],
-                  Colors.cyan[200],
-                ],
-                stops: [0.1, 0.4, 0.5, 0.7],
-              )
-            ),
-          ),
-          Container(
-            height: double.infinity,
-            child: Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 40.0,
+          children: <Widget>[
+              Container(
+              height: double.infinity, 
+              width: double.infinity, 
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.cyan[400],
+                    Colors.cyan[400],
+                    Colors.cyan[200],
+                    Colors.cyan[200],
+                  ],
+                  stops: [0.1, 0.4, 0.5, 0.7],
+                )
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: 30.0,),
-                  _buildUser(),
-                  SizedBox(height: 30.0),
-                  _buildPassword(),
-                  SizedBox(height:20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: RaisedButton(
-                          onPressed: (){
-                            Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignupPage()));
-                          },
-                          child: Text('Sign Up'),
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
+              ),
+              Container(
+              height: double.infinity,
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 40.0,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 30.0,),
+                    _buildUser(),
+                    SizedBox(height: 30.0),
+                    _buildPassword(),
+                    SizedBox(height:20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.3,
+                          child: RaisedButton(
+                            onPressed: (){
+                              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignupPage()));
+                            },
+                            child: Text('Sign Up'),
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            
                           ),
-                          
                         ),
-                      ),
-                      SizedBox(
-                        child: RaisedButton(
-                          child: Icon(Icons.arrow_forward),
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          onPressed: () async {
-                            if(_username.length > 0 && _password.length > 0) {
-                              bool isLoggedin = await HttpServices.login(user: User(_username, _password));
-                              print(isLoggedin ? 'Yay !' : 'Boozzz !');
-                            }
-                          },
+                        SizedBox(
+                          child: RaisedButton(
+                            child: Icon(Icons.arrow_forward),
+                            color: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            onPressed: () async {
+                              if(_username.length > 0 && _password.length > 0) {
+                                User logginedUser = 
+                                await HttpServices.login(cred: { 'username': _username, 'password': _password });
+                                
+                                logginedUser != null ? 
+                                  Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
+                                : 
+                                  Dialogs.showAlert(context, 'There is no data to show');
+                              }
+                            },
+                          )
                         )
-                      )
-                    ],
-                  ),
-              ]
+                      ],
+                    ),
+                  ]
+                )
               )
             )
-          )
-        ]
-      )
+          ]
+        )
     );
   }
 
@@ -249,4 +258,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-// Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignupPage()));

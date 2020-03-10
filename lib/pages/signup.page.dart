@@ -189,12 +189,7 @@ class _SignupPageState extends State<SignupPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          onPressed: () async {
-                            if(_username.length > 0 && _password.length > 0 && _email.length > 0) {
-                              bool isLoggedin =  await HttpServices.login(user: User(_username, _password));
-                                 print(isLoggedin ? 'Yay !' : 'Boozzz !');
-                            }
-                          },
+                          onPressed: ()  {}
                         )
                       )
                     ],
