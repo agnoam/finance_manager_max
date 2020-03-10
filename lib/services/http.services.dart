@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://192.168.104.81:8810';
+  static String _devURL = 'http://10.0.0.23:8010';
   
   static String get serverURL {
    return _isDebug ? 
@@ -15,7 +15,7 @@ class HttpServices {
     ;
   }
 
-  static Future<bool> login({ User user }) async {
+  static Future<dynamic> login({ User user }) async {
     http.Response res = await http.post('$serverURL/app/login', body: user.toJSON());
 
     if(res.statusCode == 200) {
@@ -26,9 +26,9 @@ class HttpServices {
       } else {
         print('description: ${resBody['description']}');
       }
-      
-      return false;
     }
+    return false;
+
   }
 }
 
@@ -41,7 +41,7 @@ class User {
   Map<String, String> toJSON() {
     return {
       'username': username,
-      'pass': password
+      'password': password
     };
   }
 }
