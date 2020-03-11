@@ -7,58 +7,219 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
 
+  bool _isCollapsed = true;
+  double screenWidth, screenHeight;
+  final Duration duration = Duration(milliseconds: 300);
+
+  Widget menu(context){
+  return Padding(
+    padding: EdgeInsets.only(left: 16.0),
+    child: Align(
+      alignment: Alignment.centerLeft,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Image.asset(
+          'assets/images/max.png', width: 70.0, height:40.0),
+          SizedBox(height: 50),
+          Text('Settings', style:TextStyle(color: Colors.black, fontSize: 22)),
+          SizedBox(height: 10),
+          Text('Cards', style:TextStyle(color: Colors.black, fontSize: 22)),
+          SizedBox(height: 10),
+          Text('Messages', style:TextStyle(color: Colors.black, fontSize: 22)),
+          SizedBox(height: 10),
+          Text('requests', style:TextStyle(color: Colors.black, fontSize: 22)),
+          SizedBox(height: 10),
+        ],
+      ),
+    ),
+  );
+}
+
+  Widget page(context) {
+    return AnimatedPositioned(
+      duration: duration,
+      top: _isCollapsed ? 0 : 0.2 * screenHeight,
+      bottom: _isCollapsed ? 0 : 0.2 * screenWidth,
+      left: _isCollapsed ? 0 : 0.6 * screenWidth,
+      right: _isCollapsed ? 0 : -0.4 * screenWidth,
+      child: Material(
+        animationDuration: Duration(milliseconds: 3000),
+        borderRadius: BorderRadius.all(Radius.circular(40)),
+        elevation: 8,
+        child: Container(
+          // decoration: BoxDecoration(
+          //   gradient: LinearGradient(
+          //     colors: [
+          //       Colors.purple[600],
+          //       Colors.cyan[700]
+          //     ]
+          //   )
+          // ),
+          padding: EdgeInsets.only(left: 16, right: 16, top: 48),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  InkWell(
+                    child: Icon(
+                      Icons.menu, 
+                      color: Colors.black, 
+                      size: 50.0
+                    ),
+                    onTap: () {
+                      setState(() {
+                        _isCollapsed = !_isCollapsed;
+                      });
+                    },
+                  ),
+                  Text('Balance', style: TextStyle(fontSize: 30)),
+                  Icon(Icons.credit_card, size: 50.0, color: Colors.cyan[600])
+                ],
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 20.0),
+                    color: Colors.white,
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.08
+                      ),
+                      child: Center(
+                        child: Text(
+                          '1,000',
+                          style: TextStyle(
+                            fontSize: 30.0,
+                            color: Colors.white
+                          )
+                        )
+                      ),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Colors.purple[600],
+                            Colors.cyan[700]
+                          ]
+                        )
+                      ),
+                    )
+                  ),
+                  SizedBox(height: 5.0),
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 20.0),
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0))
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.04
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10.0, 0, 0, 5.0),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Expenses',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black
+                                )
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '-240 for Yuda supermarket',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.red,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                          ),
+                        ]
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.5, color: Colors.grey),
+                        borderRadius: BorderRadius.all(Radius.circular(40.0))
+                      ),
+                    )
+                  ),
+                  SizedBox(height: 5.0),
+                  Card(
+                    margin: EdgeInsets.symmetric(vertical: 20.0),
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(40.0))
+                    ),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.04
+                      ),
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(10.0, 0, 0, 5.0),
+                            child: Align(
+                              alignment: Alignment.topLeft,
+                              child: Text(
+                                'Transactions',
+                                style: TextStyle(
+                                  fontSize: 20.0,
+                                  color: Colors.black
+                                )
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              '+300 from kobi',
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold
+                              )
+                            ),
+                          ),
+                        ]
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 0.5, color: Colors.grey),
+                        borderRadius: BorderRadius.all(Radius.circular(40.0))
+                      ),
+                    )
+                  ),
+                ]
+              )
+            ],
+          ),
+        )
+      ),
+    );
+}
+
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    screenHeight = size.height;
+    screenWidth = size.width;
     return Scaffold(
-      body: CustomScrollView(
-        slivers: <Widget>[
-          SliverAppBar(
-            expandedHeight: 200.0,
-            floating: false,
-            pinned: true,
-            flexibleSpace: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.purple[600],
-                    Colors.cyan[700]
-                  ]
-                )
-              ),
-            ),
-            title: Row(
-              children: <Widget>[
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.2,
-                  child: IconButton(
-                    onPressed: (){},
-                    icon: Icon(
-                      Icons.menu, 
-                      color: Colors.white
-                    ),
-                    iconSize: 60.0,
-                  )
-                ),
-                Text(
-                  '1,000', 
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold, 
-                    fontSize: 60.0
-                  )
-                ),
-              ]
-            ),
-          ),
-          SliverFillRemaining(
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text('asgasgadggasgag')
-                ],
-              )
-            )
-          )
+      body: Stack(
+        children: <Widget>[
+          menu(context),
+          page(context)
         ],
       )
     );

@@ -1,6 +1,4 @@
-import 'package:finance_manager/pages/login.page.dart';
 import 'package:flutter/material.dart';
-import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/widgets/constants.widgets.dart';
 
 class SignupPage extends StatefulWidget {
