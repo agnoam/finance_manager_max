@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://10.0.0.23:8010';
+  static String _devURL = 'http://192.168.1.22:8010';
   
   static String get serverURL {
    return _isDebug ? 

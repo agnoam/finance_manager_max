@@ -1,3 +1,4 @@
+import 'package:finance_manager/pages/login.page.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/widgets/constants.widgets.dart';
@@ -126,6 +127,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: Container(child: Image.asset(
@@ -173,8 +175,10 @@ class _SignupPageState extends State<SignupPage> {
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.3,
                         child: RaisedButton(
-                          onPressed: (){},
-                          child: Text('Sign Up'),
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
+                          child: Text('Back'),
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
@@ -184,7 +188,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       SizedBox(
                         child: RaisedButton(
-                          child: Icon(Icons.arrow_forward),
+                          child: Text('Done'),
                           color: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
