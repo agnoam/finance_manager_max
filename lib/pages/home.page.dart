@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
           Image.asset(
           'assets/images/max.png', width: 70.0, height:40.0),
           SizedBox(height: 50),
-          Text('Settings', style:TextStyle(color: Colors.black, fontSize: 22)),
+          Text('Settings ', style:TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
           Text('Cards', style:TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Text('Balance', style: TextStyle(fontSize: 30)),
                   Icon(Icons.credit_card, size: 50.0, color: Colors.cyan[600])
-                ],
+                ]
               ),
               Column(
                 mainAxisSize: MainAxisSize.max,

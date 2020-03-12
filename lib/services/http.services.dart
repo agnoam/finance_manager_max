@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://192.168.1.22:8010';
+  static String _devURL = 'http://10.0.0.17:8810';
   
   static String get serverURL {
    return _isDebug ? 
@@ -30,6 +30,24 @@ class HttpServices {
     }
     
     return null;
+  }
+}
+
+class UserCred {
+  String username;
+  String password;
+
+  UserCred({ this.username, this.password });
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'username': username,
+      'password': password
+    };
+  }
+
+  UserCred fromJSON(Map<String, dynamic> json) {
+    return UserCred(username: json['username'].toString(), password: json['password'].toString());
   }
 }
 

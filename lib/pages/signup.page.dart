@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:finance_manager/widgets/constants.widgets.dart';
+import 'package:finance_manager/services/http.services.dart';
+import 'package:finance_manager/utils/flutter_ui_utils.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -10,7 +12,7 @@ class _SignupPageState extends State<SignupPage> {
   String _username = '';
   String _password = '';
   String _email = '';
-
+  String _fname = '';
   // function for the label and input of User
   Widget _buildUser() {
     return Column(
@@ -47,6 +49,42 @@ class _SignupPageState extends State<SignupPage> {
     );
   }
 
+  //function for the label and input of use full name
+    Widget _buildFname() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Full Name',
+          style: kLabelStyle,
+        ),
+        SizedBox(height:10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextFormField(
+            keyboardType: TextInputType.text,
+            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
+            onChanged: (String value){
+              setState(() => _fname = value);
+            },
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              hintText: 'Enter Full Name...',
+              hintStyle: kHintTextStyle,
+              prefixIcon: Icon(
+                Icons.person,
+                color: Colors.black
+              )
+            )
+          )
+        )
+      ],
+    );
+  }
+
   // function for the label and input of Email
   Widget _buildEmail() {
     return Column(
@@ -62,23 +100,23 @@ class _SignupPageState extends State<SignupPage> {
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
+            keyboardType: TextInputType.text,
+            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
             onChanged: (String value){
               setState(() => _email = value);
             },
-            keyboardType: TextInputType.text,
-            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
+              hintText: 'Enter Email...',
+              hintStyle: kHintTextStyle,
               prefixIcon: Icon(
                 Icons.email,
                 color: Colors.black
-              ),
-              hintText: 'Enter Email...',
-              hintStyle: kHintTextStyle,
-            ),
-          ),
-        ),
+              )
+            )
+          )
+        )
       ],
     );
   }
@@ -161,6 +199,8 @@ class _SignupPageState extends State<SignupPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   SizedBox(height: 30.0,),
+                  _buildFname(),
+                  SizedBox(height: 30.0,),
                   _buildUser(),
                   SizedBox(height: 30.0),
                   _buildEmail(),
@@ -191,7 +231,22 @@ class _SignupPageState extends State<SignupPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          onPressed: ()  {}
+                          onPressed: () async {
+                            if(_username.length > 0 && _password.length > 0) {
+                              User logginedUser = 
+                              await HttpServices.login(cred: {
+                                'name': _fname,
+                                'email': _email,
+                                'password': _password,
+                                'username': _username, 
+                                });
+                              
+                              logginedUser != null ? 
+                                Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
+                              : 
+                                Dialogs.showAlert(context, 'There is no data to show');
+                            }
+                          },
                         )
                       )
                     ],
