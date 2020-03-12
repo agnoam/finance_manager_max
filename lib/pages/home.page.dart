@@ -1,36 +1,44 @@
+import 'package:finance_manager/pages/cards.page.dart';
+import 'package:finance_manager/services/http.services.dart';
+import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
+  final User user;
+  HomePage({Key key, this.user}) : super(key: key);
   @override
-  _HomePageState createState() => _HomePageState();
+_HomePageState createState() => _HomePageState();
 }
-
 class _HomePageState extends State<HomePage> {
-
   bool _isCollapsed = true;
   double screenWidth, screenHeight;
   final Duration duration = Duration(milliseconds: 300);
 
   Widget menu(context){
-  return Padding(
-    padding: EdgeInsets.only(left: 16.0),
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Image.asset(
-          'assets/images/max.png', width: 70.0, height:40.0),
+    return Padding(
+      padding: EdgeInsets.only(left: 16.0),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+          Image.asset('assets/images/max.png', width: 70.0, height:40.0),
           SizedBox(height: 50),
-          Text('Settings ', style:TextStyle(color: Colors.black, fontSize: 22)),
+          Text('Settings ', style: TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
-          Text('Cards', style:TextStyle(color: Colors.black, fontSize: 22)),
+          Text('Gifts', style: TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
-          Text('Messages', style:TextStyle(color: Colors.black, fontSize: 22)),
+          Text('Messages', style: TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
-          Text('requests', style:TextStyle(color: Colors.black, fontSize: 22)),
+          Text('Requests', style: TextStyle(color: Colors.black, fontSize: 22)),
+          SizedBox(height: 10),
+          Text('Expenses', style: TextStyle(color: Colors.black, fontSize: 22)),
+          SizedBox(height: 10),
+          Text('Support', style: TextStyle(color: Colors.black, fontSize: 22)),
+          SizedBox(height: 10),
+          Text('Calculator', style: TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
         ],
       ),
@@ -50,14 +58,6 @@ class _HomePageState extends State<HomePage> {
         borderRadius: BorderRadius.all(Radius.circular(40)),
         elevation: 8,
         child: Container(
-          // decoration: BoxDecoration(
-          //   gradient: LinearGradient(
-          //     colors: [
-          //       Colors.purple[600],
-          //       Colors.cyan[700]
-          //     ]
-          //   )
-          // ),
           padding: EdgeInsets.only(left: 16, right: 16, top: 48),
           child: Column(
             children: <Widget>[
@@ -78,7 +78,18 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                   Text('Balance', style: TextStyle(fontSize: 30)),
-                  Icon(Icons.credit_card, size: 50.0, color: Colors.cyan[600])
+                  InkWell(
+                    child: Icon(
+                      Icons.credit_card, 
+                      color: Colors.black, 
+                      size: 50.0
+                    ),
+                    onTap: () {
+                     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CardsPage()));
+                    },
+                  ),
+
+
                 ]
               ),
               Column(
@@ -103,14 +114,16 @@ class _HomePageState extends State<HomePage> {
                       ),
                       decoration: BoxDecoration(
                         gradient: LinearGradient(
+                          
                           colors: [
-                            Colors.purple[600],
-                            Colors.cyan[700]
+                            HexColor('#5dcbc7'),
+                            HexColor('#031851')
                           ]
                         )
                       ),
                     )
                   ),
+                  
                   SizedBox(height: 5.0),
                   Card(
                     margin: EdgeInsets.symmetric(vertical: 20.0),
@@ -201,6 +214,15 @@ class _HomePageState extends State<HomePage> {
                       ),
                     )
                   ),
+          
+                  FloatingActionButton.extended(
+                  onPressed: () {
+
+                  },
+                  icon: Icon(Icons.send,),
+                  label: Text("send", style: TextStyle(fontSize: 20),),
+                  backgroundColor:HexColor("#031851") ,),
+                
                 ]
               )
             ],

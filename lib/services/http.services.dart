@@ -15,7 +15,7 @@ class HttpServices {
     ;
   }
 
-  static Future<User> login({ Map<String, String> cred }) async {
+  static Future<bool> login({ Map<String, String> cred }) async {
     http.Response res = await http.post(
       '$serverURL/app/login', 
       body: cred
@@ -25,11 +25,11 @@ class HttpServices {
       Map<String, dynamic> resBody = jsonDecode(res.body);      
       
       if(resBody['auth'].toString().toLowerCase() == 'true') {
-        return User.fromJSON(resBody['user']);
+        return true;
       }
     }
     
-    return null;
+    return false;
   }
 }
 

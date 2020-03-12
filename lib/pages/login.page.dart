@@ -1,3 +1,4 @@
+import 'package:finance_manager/pages/home.page.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:finance_manager/services/http.services.dart';
@@ -12,7 +13,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  String _username = '';
+  String _email = '';
   String _password = '';
 
   //The login modal function
@@ -31,7 +32,7 @@ class _LoginPageState extends State<LoginPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            'User',
+            'Email',
             style: kLabelStyle,
           ),
           SizedBox(height:10.0),
@@ -41,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
             height: 60.0,
             child: TextFormField(
               onChanged: (String value){
-                setState(() => _username = value);
+                setState(() => _email = value);
               },
               keyboardType: TextInputType.emailAddress,
               style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   Icons.email,
                   color: Colors.black
                 ),
-                hintText: 'Enter User...',
+                hintText: 'Enter Email...',
                 hintStyle: kHintTextStyle,
               ),
             ),
@@ -164,12 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                               borderRadius: BorderRadius.circular(10.0),
                             ),
                             onPressed: () async {
-                              if(_username.length > 0 && _password.length > 0) {
-                                User logginedUser = 
-                                await HttpServices.login(cred: { 'username': _username, 'password': _password });
-                                
-                                logginedUser != null ? 
-                                  Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
+                              if(_email.length > 0 && _password.length > 0) {
+                                await HttpServices.login(cred: { 'email': _email, 'password': _password }) ? 
+                                  //Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
+                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => HomePage()))
                                 : 
                                   Dialogs.showAlert(context, 'There is no data to show');
                               }
