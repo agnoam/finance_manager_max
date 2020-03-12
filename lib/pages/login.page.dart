@@ -54,10 +54,10 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 hintText: 'Enter User...',
                 hintStyle: kHintTextStyle,
-              ),
-            ),
-          ),
-        ],
+              )
+            )
+          )
+        ]
       );
   }
 
@@ -165,13 +165,10 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onPressed: () async {
                               if(_username.length > 0 && _password.length > 0) {
-                                User logginedUser = 
-                                await HttpServices.login(cred: { 'username': _username, 'password': _password });
-                                
-                                logginedUser != null ? 
-                                  Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
-                                : 
-                                  Dialogs.showAlert(context, 'There is no data to show');
+                                bool logginedUser = 
+                                  await HttpServices.login(emailPass: { 'email': _username, 'password': _password });
+
+                                print('logginedUser $logginedUser');
                               }
                             },
                           )
