@@ -233,7 +233,7 @@ class _SignupPageState extends State<SignupPage> {
                           ),
                           onPressed: () async {
                             if(_username.length > 0 && _password.length > 0) {
-                              User logginedUser = 
+                             /*User logginedUser = 
                               await HttpServices.login(cred: {
                                 'name': _fname,
                                 'email': _email,
@@ -244,7 +244,7 @@ class _SignupPageState extends State<SignupPage> {
                               logginedUser != null ? 
                                 Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
                               : 
-                                Dialogs.showAlert(context, 'There is no data to show');
+                                Dialogs.showAlert(context, 'There is no data to show');*/
                             }
                           },
                         )

@@ -1,10 +1,13 @@
 import 'package:finance_manager/pages/cards.page.dart';
+import 'package:finance_manager/pages/sendmoney.page.dart';
 import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
+import 'package:finance_manager/widgets/messages.widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  final User user;
+  final User user; 
+  //final Card; after choosing a card
   HomePage({Key key, this.user}) : super(key: key);
   @override
 _HomePageState createState() => _HomePageState();
@@ -13,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   bool _isCollapsed = true;
   double screenWidth, screenHeight;
   final Duration duration = Duration(milliseconds: 300);
-
+       
   Widget menu(context){
     return Padding(
       padding: EdgeInsets.only(left: 16.0),
@@ -30,9 +33,7 @@ class _HomePageState extends State<HomePage> {
           SizedBox(height: 10),
           Text('Gifts', style: TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
-          Text('Messages', style: TextStyle(color: Colors.black, fontSize: 22)),
-          SizedBox(height: 10),
-          Text('Requests', style: TextStyle(color: Colors.black, fontSize: 22)),
+          Text('Messages & Requests', style: TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
           Text('Expenses', style: TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
@@ -57,7 +58,8 @@ class _HomePageState extends State<HomePage> {
         animationDuration: Duration(milliseconds: 3000),
         borderRadius: BorderRadius.all(Radius.circular(40)),
         elevation: 8,
-        child: Container(
+        child: Wrap(children: <Widget>[
+        Container(
           padding: EdgeInsets.only(left: 16, right: 16, top: 48),
           child: Column(
             children: <Widget>[
@@ -69,7 +71,7 @@ class _HomePageState extends State<HomePage> {
                     child: Icon(
                       Icons.menu, 
                       color: Colors.black, 
-                      size: 50.0
+                      size: 40.0
                     ),
                     onTap: () {
                       setState(() {
@@ -77,12 +79,12 @@ class _HomePageState extends State<HomePage> {
                       });
                     },
                   ),
-                  Text('Balance', style: TextStyle(fontSize: 30)),
+                  Text('Balance', style: TextStyle(fontSize: 20)),
                   InkWell(
                     child: Icon(
                       Icons.credit_card, 
                       color: Colors.black, 
-                      size: 50.0
+                      size: 40.0
                     ),
                     onTap: () {
                      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CardsPage()));
@@ -105,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Center(
                         child: Text(
-                          '1,000',
+                          '1,000 ₪',
                           style: TextStyle(
                             fontSize: 30.0,
                             color: Colors.white
@@ -113,13 +115,14 @@ class _HomePageState extends State<HomePage> {
                         )
                       ),
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
+                        color: HexColor('#031851')
+                        /*gradient: LinearGradient(
                           
                           colors: [
                             HexColor('#5dcbc7'),
                             HexColor('#031851')
                           ]
-                        )
+                        )*/
                       ),
                     )
                   ),
@@ -214,10 +217,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     )
                   ),
+
           
                   FloatingActionButton.extended(
                   onPressed: () {
-
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SendMoney()));
                   },
                   icon: Icon(Icons.send,),
                   label: Text("send", style: TextStyle(fontSize: 20),),
@@ -228,6 +232,8 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
         )
+        ]
+      )
       ),
     );
 }
@@ -241,7 +247,9 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: <Widget>[
           menu(context),
-          page(context)
+           page(context)
+         
+          
         ],
       )
     );
