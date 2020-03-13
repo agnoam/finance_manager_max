@@ -9,17 +9,83 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  String _username = '';
-  String _password = '';
-  String _email = '';
-  String _fname = '';
-  // function for the label and input of User
-  Widget _buildUser() {
+  String _firstname = '';
+  String _lastname = '';
+  String _username = ''; //-
+  String _email = ''; //-
+  String _password = ''; //-
+  String _city = '';
+  String _country = '';
+  String _pinCode = '';
+  String _postalCode = '';
+  String _addressLine = '';
+  
+  //function for two inputs in one row
+
+    Widget _buildTwoInOne(String title, List<String> hint, List<String>data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'User',
+          title,
+          style: kLabelStyle,
+        ),
+        SizedBox(height:10.0),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[ 
+            Container(
+              alignment: Alignment.centerLeft,
+              decoration: kBoxDecorationStyle,
+              height: 60.0,
+              width: 160,
+              child: TextFormField(
+                onChanged: (String value){
+                  setState(() => data[0] = value);
+                },
+                keyboardType: TextInputType.text,
+                style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 14.0),
+                  hintText: '${hint[0]}...',
+                  hintStyle: kHintTextStyle,
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              decoration: kBoxDecorationStyle,
+              height: 60.0,
+              width: 160,
+              child: TextFormField(
+                onChanged: (String value){
+                  setState(() => data[1] = value);
+                },
+                keyboardType: TextInputType.text,
+                style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 14.0),
+                  hintText: '${hint[1]}...',
+                  hintStyle: kHintTextStyle,
+                ),
+              ),
+            ),
+          ]
+        ),
+      ],
+    );
+  }
+
+
+  // function for the label and input of User
+  Widget _buildPlain(String title, String vari, String hint) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          title,
           style: kLabelStyle,
         ),
         SizedBox(height:10.0),
@@ -29,7 +95,7 @@ class _SignupPageState extends State<SignupPage> {
           height: 60.0,
           child: TextFormField(
             onChanged: (String value){
-              setState(() => _username = value);
+              setState(() => vari = value);
             },
             keyboardType: TextInputType.text,
             style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
@@ -40,83 +106,11 @@ class _SignupPageState extends State<SignupPage> {
                 Icons.account_circle,
                 color: Colors.black
               ),
-              hintText: 'Enter User...',
+              hintText: 'Enter ${hint}...',
               hintStyle: kHintTextStyle,
             ),
           ),
         ),
-      ],
-    );
-  }
-
-  //function for the label and input of use full name
-    Widget _buildFname() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Full Name',
-          style: kLabelStyle,
-        ),
-        SizedBox(height:10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            keyboardType: TextInputType.text,
-            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
-            onChanged: (String value){
-              setState(() => _fname = value);
-            },
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              hintText: 'Enter Full Name...',
-              hintStyle: kHintTextStyle,
-              prefixIcon: Icon(
-                Icons.person,
-                color: Colors.black
-              )
-            )
-          )
-        )
-      ],
-    );
-  }
-
-  // function for the label and input of Email
-  Widget _buildEmail() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          'Email',
-          style: kLabelStyle,
-        ),
-        SizedBox(height:10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            keyboardType: TextInputType.text,
-            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
-            onChanged: (String value){
-              setState(() => _email = value);
-            },
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              hintText: 'Enter Email...',
-              hintStyle: kHintTextStyle,
-              prefixIcon: Icon(
-                Icons.email,
-                color: Colors.black
-              )
-            )
-          )
-        )
       ],
     );
   }
@@ -195,17 +189,20 @@ class _SignupPageState extends State<SignupPage> {
               padding: EdgeInsets.symmetric(
                 horizontal: 40.0,
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+              child: ListView(
                 children: <Widget>[
-                  SizedBox(height: 30.0,),
-                  _buildFname(),
-                  SizedBox(height: 30.0,),
-                  _buildUser(),
-                  SizedBox(height: 30.0),
-                  _buildEmail(),
-                  SizedBox(height: 30.0),
+                  SizedBox(height: 20.0,),
+                  _buildTwoInOne('Full Name', ['First name', 'Last name'], [_firstname, _lastname]),
+                  SizedBox(height: 20.0,),
+                  _buildPlain('Username', _username, 'Username'),
+                  SizedBox(height: 20.0,),
+                  _buildPlain('Email', _email, 'Email'),
+                  SizedBox(height: 20.0),
                   _buildPassword(),
+                  SizedBox(height: 20.0),
+                  _buildTwoInOne('Location', ['Enter City...', 'Enter Country...'], [_city, _country]),
+                  SizedBox(height:20.0),
+                  _buildTwoInOne('Location', ['Pin Code...', 'Postal Code...'], [_pinCode, _postalCode]),
                   SizedBox(height:20.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,6 +228,7 @@ class _SignupPageState extends State<SignupPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
+<<<<<<< HEAD
                           onPressed: () async {
                             if(_username.length > 0 && _password.length > 0) {
                              /*User logginedUser = 
@@ -247,6 +245,31 @@ class _SignupPageState extends State<SignupPage> {
                                 Dialogs.showAlert(context, 'There is no data to show');*/
                             }
                           },
+=======
+                          onPressed: ()=>null,
+                          // onPressed: () async {
+                          //   if(_username.length > 0 && _password.length > 0 && _email.length > 0 && _fname.length > 0) {
+                          //     NewUserCred signedUpUser = await HttpServices.signup(
+                          //       userCred: NewUserCred(NewUserData(
+                          //         password: _password, pinCode: _pinCode
+                          //       ), NewUserInfo(
+                          //         addressLine: _addressLine,
+                          //         email: _email,
+                          //         city: _city,
+                          //         country: _country,
+                          //         postalCode: _postalCode,
+                          //         firstname: _firstname,
+                          //         lastname: _lastname
+                          //       ))
+                          //     );
+                              
+                          //     signedUpUser != null ? 
+                          //       Dialogs.showAlert(context, signedUpUser.toString(), title: 'User Data')
+                          //     : 
+                          //       Dialogs.showAlert(context, 'There is no data to show');
+                          //   }
+                          // },
+>>>>>>> 65939ad5f017485deafb2810bb4cd7e37ef32259
                         )
                       )
                     ],
