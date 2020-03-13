@@ -1,6 +1,7 @@
 import 'package:finance_manager/pages/home.page.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/pages/login.page.dart';
+import 'package:finance_manager/pages/calc.page.dart';
 
 void main() => runApp(AppRoot());
 
@@ -12,6 +13,7 @@ class AppRoot extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       // home: HomePage()
       home: LoginPage()
+      // home: Calc()
     );
   }
 }

@@ -21,8 +21,7 @@ class _HomePageState extends State<HomePage> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Image.asset(
-          'assets/images/max.png', width: 70.0, height:40.0),
+          Image.asset('assets/images/max.png', width: 70.0, height:40.0),
           SizedBox(height: 50),
           Text('Settings ', style:TextStyle(color: Colors.black, fontSize: 22)),
           SizedBox(height: 10),
