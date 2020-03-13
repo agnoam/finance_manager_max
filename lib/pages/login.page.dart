@@ -8,6 +8,8 @@ import 'package:finance_manager/pages/signup.page.dart';
 // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignupPage()));
 
 class LoginPage extends StatefulWidget {
+  LoginPage({ Key key }) : super(key: key);
+  
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -166,17 +168,21 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onPressed: () async {
                               if(_email.length > 0 && _password.length > 0) {
-                                await HttpServices.login(cred: { 'email': _email, 'password': _password }) ? 
-                                  //Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
-                                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => HomePage()))
-                                : 
+                                if(await HttpServices.login(emailPass: { 'email': _email, 'password': _password })) { 
+                                  double balance = await HttpServices.getBalance();
+                                  print(balance);
+
+                                  Navigator.of(context).push(MaterialPageRoute(builder: 
+                                    (BuildContext context) => HomePage(balance: balance)));
+                                } else { 
                                   Dialogs.showAlert(context, 'There is no data to show');
+                                }
                               }
-                            },
+                            }
                           )
                         )
-                      ],
-                    ),
+                      ]
+                    )
                   ]
                 )
               )

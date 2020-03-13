@@ -1,4 +1,4 @@
-import 'package:finance_manager/pages/home.page.dart';
+import 'package:finance_manager/pages/login.page.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(AppRoot());
@@ -9,13 +9,7 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage()
-      // home: LoginPage()
-      // home: Calc()
-      // home: CardsPage()
-      //home: LoginPage()
-      
-
+      home: LoginPage()
     );
   }
 }

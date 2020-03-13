@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:finance_manager/services/storage.services.dart';
 import 'package:http/http.dart' as http;
 
 class HttpServices {
@@ -13,20 +14,44 @@ class HttpServices {
       'https://real-server.com';
   }
 
-  static Future<bool> login({ Map<String, String> cred }) async {
-    http.Response res = await http.post(
-      '$serverURL/app/login', 
-      body: cred
-    );
+  static Future<UserCred> _prepareCredentials() async {
+    try {
+      Map<String, dynamic> cred = await StorageH.getJSON(StoragePaths.LoginCred);
+      UserCred userCred = UserCred.fromJSON(cred);
 
-    if(res.statusCode == 200) {
-      Map<String, dynamic> resBody = jsonDecode(res.body);      
-      
-      if(resBody['auth'].toString().toLowerCase() == 'true') {
-        return true;
+      if(userCred.expDate >= DateTime.now().millisecondsSinceEpoch) {
+        await login(emailPass: { 'email': userCred.email, 'password': userCred.password });
+        Map<String, dynamic> newCredJSON = await StorageH.getJSON(StoragePaths.LoginCred);
+        UserCred newCred = UserCred.fromJSON(newCredJSON);
+
+        return newCred;
       }
+
+      return userCred;
+    } catch(ex) {
+      throw ex;
     }
-    
+  }
+
+  static Future<bool> login({ Map<String, String> emailPass }) async {
+    try {
+      http.Response res = await http.post('$serverURL/app/login', body: emailPass);
+      if(res.statusCode == 200) {
+        Map<String, dynamic> resBody = jsonDecode(res.body);      
+        
+        if(resBody['auth'].toString().toLowerCase() == 'true') {
+          Map<String, dynamic> creds = resBody['cred'];
+          creds['expDate'] = resBody['expDate'];
+          creds['email'] = emailPass['email'];
+          creds['password'] = emailPass['password'];
+
+          StorageH.setJSON(StoragePaths.LoginCred, UserCred.fromJSON(creds).toJSON());
+          return true;
+        }
+      }
+    } catch(ex) {
+      print(ex);
+    }
     return false;
   }
 
@@ -42,6 +67,63 @@ class HttpServices {
       if(resBody['isCreated'].toString().toLowerCase() == 'true'){
         return NewUserCred.fromJSON(resBody['user']);
       }
+    }
+  }
+
+  static Future<double> getBalance() async {
+    try {
+      UserCred creds = await _prepareCredentials();
+      http.Response res = await http.post('$serverURL/app/get-balance', 
+      headers: { 'content-type': 'application/json' },
+      body: jsonEncode({
+        'creds': {
+          'id': creds.id,
+          'CredentialsHeaderName': creds.CredentialsHeaderName,
+          'CredentialsToken': creds.CredentialsToken
+        }
+      })
+      );
+
+      if(res.statusCode == 200) {
+        Map<String, dynamic> body = jsonDecode(res.body);
+        BalanceResponse balance = BalanceResponse.fromJSON(body['d'][0]);
+        return balance.Current;
+      }
+
+      throw 'Did not able to get balance';
+    } catch(ex) {
+      throw ex;
+    }
+  }
+}
+
+class BalanceResponse {
+  String CurrencyIso;
+  double Current; // Balance
+  double Expected;
+  double Pending;
+
+  BalanceResponse({ this.CurrencyIso, this.Current, this.Expected, this.Pending });
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'CurrencyIso': CurrencyIso,
+      'Content': Current,
+      'Expected': Expected,
+      'Pending': Pending
+    };
+  }
+
+  static BalanceResponse fromJSON(Map<String, dynamic> json) {
+    try {
+      return BalanceResponse(
+        Current: double.parse(json['Current'].toString()), 
+        Expected: double.parse(json['Expected'].toString()), 
+        CurrencyIso: json['CurrencyIso'].toString(),
+        Pending: double.parse(json['Pending'].toString())
+      );
+    } catch(ex) {
+      throw ex;
     }
   }
 }
@@ -203,6 +285,59 @@ class User {
       profileImage: json['profileImage'],
       lastConnected: json['lastConnected']
     );
+  }
+
+  @override
+  String toString() {
+    return toJSON().toString();
+  }
+}
+
+class UserCred {
+  // CoriunderCredentials
+  String id;
+  String CredentialsToken; 
+  String CredentialsHeaderName;
+  
+  int expDate;
+  
+  // username password of client
+  String email;
+  String password;
+
+  UserCred(
+    this.CredentialsToken, 
+    this.CredentialsHeaderName, 
+    this.expDate, 
+    this.email, 
+    this.password,
+    this.id
+  );
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'CredentialsToken': CredentialsToken,
+      'CredentialsHeaderName': CredentialsHeaderName,
+      'expDate': expDate,
+      'email': email,
+      'password': password,
+      'id': id
+    };
+  }
+
+  static UserCred fromJSON(Map<String, dynamic> json) {
+    try {
+      return UserCred(
+        json['CredentialsToken'].toString(),
+        json['CredentialsHeaderName'].toString(), 
+        int.parse(json['expDate'].toString()),
+        json['email'],
+        json['password'],
+        json['id']
+      );
+    } catch(ex) {
+      throw ex;
+    }
   }
 
   @override
