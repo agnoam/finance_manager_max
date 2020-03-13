@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:finance_manager/widgets/constants.widgets.dart';
-import 'package:finance_manager/services/http.services.dart';
-import 'package:finance_manager/utils/flutter_ui_utils.dart';
 
 class SignupPage extends StatefulWidget {
   @override

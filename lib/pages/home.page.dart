@@ -15,17 +15,6 @@ class _HomePageState extends State<HomePage> {
   final Duration duration = Duration(milliseconds: 300);
 
   Widget menu(context){
-<<<<<<< HEAD
-  return Padding(
-    padding: EdgeInsets.only(left: 16.0),
-    child: Align(
-      alignment: Alignment.centerLeft,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-=======
     return Padding(
       padding: EdgeInsets.only(left: 16.0),
       child: Align(
@@ -35,7 +24,6 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
->>>>>>> a97177e3105d63b3ab2689ac01ba0554623099fc
           Image.asset('assets/images/max.png', width: 70.0, height:40.0),
           SizedBox(height: 50),
           Text('Settings ', style: TextStyle(color: Colors.black, fontSize: 22)),
