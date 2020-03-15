@@ -22,7 +22,7 @@ class Dialogs {
   ///
   /// `onDismiss` CallBack function that calls back
   /// when the dialog dismissed = not hit OK
-  static showAlert( BuildContext context, String body, {
+  static void showAlert( BuildContext context, String body, {
     String title = 'Alert',
     String buttonName = 'OK',
     Function onResolve,

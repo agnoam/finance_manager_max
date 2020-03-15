@@ -20,42 +20,53 @@ class _CardInfoState extends State<CardInfo> {
 
 
 Widget page(context) { 
-    return Material(
-        child: Container(
-          child: Column(
+  return Material(
+    child: Container(
+      child: Column(
+        children: <Widget>[
+          Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-           
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  CreditCard(cardNumber: this.widget.cardNumber, expiryDate: this.widget.expiryDate, cardHolderName: this.widget.cardHolderName, cvvCode: this.widget.cvvCode,height:160,width:350),
-                  //insert real card info here^ 
-        
+              CreditCard(
+                cardNumber: widget.cardNumber, 
+                expiryDate: widget.expiryDate, 
+                cardHolderName: widget.cardHolderName, 
+                cvvCode: widget.cvvCode,
+                height: 160,
+                width: 350
+              )
+              //insert real card info here^ 
+            ]
+          ),
+            Column(
+              children:<Widget>[
+                Text('Card holder name:' ,style: TextStyle(fontSize: 20,color: Colors.black)),
+                TextField(
+                  textAlign: TextAlign.center,
+                  enabled: false,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    hintText: this.widget.cardHolderName),
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black
+                    )
+                  )
                 ]
               ),
               Column(
-                  children:<Widget>[
-                    Text('Card holder name:' ,style: TextStyle(fontSize: 20,color: Colors.black)),
-                    TextField(
-                      textAlign: TextAlign.center,
-                      enabled: false,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: this.widget.cardHolderName),style: TextStyle(fontSize: 20,color: Colors.black)),
-                  ]
-               ),
-               Column(
                   children:<Widget>[
                     Text('Card number:',style: TextStyle(fontSize: 20,color: Colors.black)),
                     TextField(
                       textAlign: TextAlign.center,
                       enabled: false,
-              decoration: InputDecoration(
-              border: InputBorder.none,
-              hintText: this.widget.cardNumber)
-              ,style: TextStyle(fontSize: 20,color: Colors.black)
-              ), 
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: this.widget.cardNumber
+                      ),
+                      style: TextStyle(fontSize: 20,color: Colors.black)
+                    ), 
                   ]
                ),
                Column(
