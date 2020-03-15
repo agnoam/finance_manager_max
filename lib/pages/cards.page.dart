@@ -1,4 +1,5 @@
 import 'package:finance_manager/pages/home.page.dart';
+import 'package:finance_manager/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:finance_manager/widgets/creditcard.widgets.dart';
@@ -11,34 +12,29 @@ class CardsPage extends StatefulWidget {
 }
 
 class _CardsPageState extends State<CardsPage> {
-
-
-Widget page(context) { 
+  List<CreditCard> cards = [
+    CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
+      cardHolderName: 'Name', cvvCode: '343',height:160,width:350),
+    CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
+      cardHolderName: 'Name', cvvCode: '343',height:160,width:350),
+    CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
+      cardHolderName: 'Name', cvvCode: '343',height:160,width:350)
+  ];
+  
+  Widget page(context) { 
     return Material(
-        child: Container(
-          child: Column(
-            children: <Widget>[
-           
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', cardHolderName: 'Name', cvvCode: '343',height:160,width:350),
-                  CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', cardHolderName: 'Name', cvvCode: '343',height:160,width:350),
-                  CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', cardHolderName: 'Name', cvvCode: '343',height:160,width:350),
-
-                  //insert real card info here^ 
-                  SizedBox(height: 5.0),
-                ]
-              )
-            ],
-          ),
+      child: Container(
+        child: ListView.builder(
+          itemCount: AppVariables.NumberOfCards,
+          itemBuilder: (context, index) {
+            return cards[index];
+          }
         )
-      );
+      )
+    );
   }
 
-
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

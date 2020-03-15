@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
                                 print('found balance');
                                 if(snapshot.hasData) {
                                   return Text(
-                                    '$_balance ₪',
+                                    '${ snapshot.data } ₪',
                                     style: TextStyle(
                                       fontSize: 30.0,
                                       color: Colors.white
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                                 return CircularProgressIndicator();
 
                               default:
-                                return Text('Please wait...');
+                                return CircularProgressIndicator();
                             }
                           }
                         )

@@ -4,3 +4,7 @@ class AssetsPaths {
   static const String MaxLogo = '$_ImagesPath/max.png';
   static const String VisaLogo='$_ImagesPath/visa.png';
 }
+
+class AppVariables {
+  static const int NumberOfCards = 3;
+}

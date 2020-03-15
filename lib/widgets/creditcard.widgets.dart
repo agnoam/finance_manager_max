@@ -27,9 +27,15 @@ class CreditCard extends StatefulWidget {
   @override
   _CreditCard createState() => _CreditCard();
 }
-class _CreditCard extends State<CreditCard>
-{
-        Widget _buildCard(String cardHolderName, String cardNumber,String expiryDate, String cvvCode, double height, double width){
+class _CreditCard extends State<CreditCard> {
+  Widget _buildCard(
+    String cardHolderName, 
+    String cardNumber,
+    String expiryDate, 
+    String cvvCode, 
+    double height, 
+    double width
+  ){
     return Container(
       child: Stack(
         children: <Widget> [
@@ -51,12 +57,14 @@ class _CreditCard extends State<CreditCard>
                   padding: EdgeInsets.only(top: 25, left: 25), 
                   child: Image.asset(AssetsPaths.MaxLogo, scale: MediaQuery.of(context).size.width / 60)
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 130, left: 270), 
+                Positioned(
+                  bottom: 25,
+                  right: 25,
                   child: Image.asset(AssetsPaths.VisaLogo, scale: MediaQuery.of(context).size.width / 30)
                 ),
-                Padding(
-                  padding: EdgeInsets.only(top: 25, left: 320), 
+                Positioned(
+                  top: 25,
+                  right: 25,
                   child: InkWell(
                     child: Icon(
                       Icons.info_outline, 
@@ -64,9 +72,11 @@ class _CreditCard extends State<CreditCard>
                       size: 30.0
                     ),
                     onTap: () {
-                     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CardInfo()));
-                    },
-                  ),
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (BuildContext context) => CardInfo())
+                      );
+                    }
+                  )
                 )
               ]
             )
@@ -75,10 +85,16 @@ class _CreditCard extends State<CreditCard>
       )
     );
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return _buildCard(this.widget.cardHolderName,this.widget.cardNumber,this.widget.expiryDate,this.widget.cvvCode,this.widget.height,this.widget.width);
-
-}
+    return _buildCard(
+      widget.cardHolderName,
+      widget.cardNumber,
+      widget.expiryDate,
+      widget.cvvCode,
+      widget.height,
+      widget.width
+    );
+  }
 }
