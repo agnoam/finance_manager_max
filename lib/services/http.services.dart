@@ -19,7 +19,7 @@ class HttpServices {
       Map<String, dynamic> cred = await StorageH.getJSON(StoragePaths.LoginCred);
       UserCred userCred = UserCred.fromJSON(cred);
 
-      if(userCred.expDate >= DateTime.now().millisecondsSinceEpoch) {
+      if(userCred.expDate > DateTime.now().millisecondsSinceEpoch) {
         await login(emailPass: { 'email': userCred.email, 'password': userCred.password });
         Map<String, dynamic> newCredJSON = await StorageH.getJSON(StoragePaths.LoginCred);
         UserCred newCred = UserCred.fromJSON(newCredJSON);
@@ -94,6 +94,34 @@ class HttpServices {
     } catch(ex) {
       throw ex;
     }
+  }
+
+  static Future<bool> transferMoney(String destAccID, double amount, String pinCode) async {
+    try {
+      UserCred creds = await _prepareCredentials();
+      http.Response res = await http.post(
+        '$serverURL/app/transfer-amount', 
+        headers: { 'content-type': 'application/json' },
+        body: jsonEncode({
+          'creds': {
+            'id': creds.id,
+            'CredentialsHeaderName': creds.CredentialsHeaderName,
+            'CredentialsToken': creds.CredentialsToken
+          },
+          'destAccID': destAccID,
+          'amount': amount,
+          'pinCode': pinCode,
+          'currencyIso': "ILS",
+          'text': 'Message'
+        })
+      );
+
+      return res.statusCode == 200;
+    } catch(ex) {
+      print('http ex, $ex');
+    }
+
+    return false;
   }
 }
 

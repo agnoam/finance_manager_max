@@ -7,19 +7,26 @@ import 'package:finance_manager/widgets/messages.widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  final double balance;
-
   // final Card; after choosing a card
-  HomePage({Key key, @required this.balance }) : super(key: key);
+  HomePage({ Key key }) : super(key: key);
   
   @override
   _HomePageState createState() => _HomePageState();
 }
 class _HomePageState extends State<HomePage> {
   bool _isCollapsed = true;
-  double screenWidth, screenHeight;
+  double screenWidth, screenHeight, _balance;
   final Duration duration = Duration(milliseconds: 300);
        
+  @override
+  void initState() {
+    super.initState();
+
+    HttpServices.getBalance().then((double balance) {
+      setState(() => _balance = balance);
+    });
+  }
+
   Widget menu(context){
     return Padding(
       padding: EdgeInsets.only(left: 16.0),
@@ -108,7 +115,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       child: Center(
                         child: Text(
-                          '${widget.balance} ₪',
+                          '$_balance ₪',
                           style: TextStyle(
                             fontSize: 30.0,
                             color: Colors.white

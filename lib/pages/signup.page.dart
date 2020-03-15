@@ -226,29 +226,22 @@ class _SignupPageState extends State<SignupPage> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
-                          onPressed: ()=>null,
-                          // onPressed: () async {
-                          //   if(_username.length > 0 && _password.length > 0 && _email.length > 0 && _fname.length > 0) {
-                          //     NewUserCred signedUpUser = await HttpServices.signup(
-                          //       userCred: NewUserCred(NewUserData(
-                          //         password: _password, pinCode: _pinCode
-                          //       ), NewUserInfo(
-                          //         addressLine: _addressLine,
-                          //         email: _email,
-                          //         city: _city,
-                          //         country: _country,
-                          //         postalCode: _postalCode,
-                          //         firstname: _firstname,
-                          //         lastname: _lastname
-                          //       ))
-                          //     );
+                          onPressed: () async {
+                            if(_username.length > 0 && _password.length > 0) {
+                             /*User logginedUser = 
+                              await HttpServices.login(cred: {
+                                'name': _fname,
+                                'email': _email,
+                                'password': _password,
+                                'username': _username, 
+                                });
                               
-                          //     signedUpUser != null ? 
-                          //       Dialogs.showAlert(context, signedUpUser.toString(), title: 'User Data')
-                          //     : 
-                          //       Dialogs.showAlert(context, 'There is no data to show');
-                          //   }
-                          // },
+                              logginedUser != null ? 
+                                Dialogs.showAlert(context, logginedUser.toString(), title: 'User Data')
+                              : 
+                                Dialogs.showAlert(context, 'There is no data to show');*/
+                            }
+                          },
                         )
                       )
                     ],

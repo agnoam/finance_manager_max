@@ -169,11 +169,8 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () async {
                               if(_email.length > 0 && _password.length > 0) {
                                 if(await HttpServices.login(emailPass: { 'email': _email, 'password': _password })) { 
-                                  double balance = await HttpServices.getBalance();
-                                  print(balance);
-
                                   Navigator.of(context).push(MaterialPageRoute(builder: 
-                                    (BuildContext context) => HomePage(balance: balance)));
+                                    (BuildContext context) => HomePage()));
                                 } else { 
                                   Dialogs.showAlert(context, 'There is no data to show');
                                 }
