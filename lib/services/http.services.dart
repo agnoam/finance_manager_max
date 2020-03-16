@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://10.0.0.41:8010';
+  static String _devURL = 'http://192.168.43.111:8810';
   
   static String get serverURL {
    return _isDebug ? 
@@ -68,6 +68,7 @@ class HttpServices {
         return NewUserCred.fromJSON(resBody['user']);
       }
     }
+    return null;
   }
 
   static Future<double> getBalance() async {

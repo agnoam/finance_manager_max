@@ -62,7 +62,6 @@ Widget page(context) {
                         ),
                       ],
                       ),
-
                       Row(
                    children: <Widget>[
                     Expanded(
@@ -80,7 +79,6 @@ Widget page(context) {
                       ),
                       ],
                       ),
-
                       SizedBox(height: 20),
                       Row(
                       children: <Widget>[
@@ -102,13 +100,8 @@ Widget page(context) {
                       ],
                       ),
                   ],
-                  
-                  
                   )
-
-                  
                   ),
-
                 ]
               )
             ],
@@ -117,8 +110,7 @@ Widget page(context) {
       );
   }
 
-
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
