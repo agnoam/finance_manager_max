@@ -69,6 +69,7 @@ class HttpServices {
         return NewUserCred.fromJSON(resBody['user']);
       }
     }
+    return null;
   }
 
   static Future<double> getBalance() async {
