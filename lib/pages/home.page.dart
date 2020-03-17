@@ -117,9 +117,9 @@ class _HomePageState extends State<HomePage> {
                               case ConnectionState.active:
                               case ConnectionState.waiting:
                                 return CircularProgressIndicator();
+                                
                               case ConnectionState.none:
                               case ConnectionState.done:
-                                print('found balance');
                                 if(snapshot.hasData) {
                                   return Text(
                                     '${ snapshot.data } ₪',
