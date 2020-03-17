@@ -59,7 +59,8 @@ class HttpServices {
   static Future<NewUserCred> signup({ NewUserCred userCred }) async {
     http.Response res = await http.post(
       '$serverURL/app/sign-up',
-      body: userCred.toJSON()
+      body: jsonEncode(userCred.toJSON()),
+      headers: {'content-type': 'application/json'}
     );
 
     if(res.statusCode == 200) {

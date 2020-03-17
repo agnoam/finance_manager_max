@@ -298,7 +298,7 @@ class _SignupPageState extends State<SignupPage> {
       print('city is not valid');
       res = false;
     }
-    if(_country.length < 3 ) {
+    if(_country.length < 2 ) {
       print('country is not valid');
       res = false;
     }
