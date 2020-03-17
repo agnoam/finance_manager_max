@@ -1,9 +1,9 @@
 import 'package:finance_manager/pages/cards.page.dart';
+import 'package:finance_manager/pages/login.page.dart';
 import 'package:finance_manager/pages/sendmoney.page.dart';
 import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/utils/constants.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
-import 'package:finance_manager/widgets/messages.widgets.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,10 +21,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-
-    HttpServices.getBalance().then((double balance) {
-      setState(() => _balance = balance);
-    });
   }
 
   Widget menu(context){
@@ -50,7 +46,7 @@ class _HomePageState extends State<HomePage> {
             Text('Support', style: TextStyle(color: Colors.black, fontSize: 22)),
             SizedBox(height: 10),
             Text('Calculator', style: TextStyle(color: Colors.black, fontSize: 22)),
-            SizedBox(height: 10),
+            SizedBox(height: 10)
           ]
         )
       )
@@ -114,12 +110,32 @@ class _HomePageState extends State<HomePage> {
                         vertical: MediaQuery.of(context).size.height * 0.08
                       ),
                       child: Center(
-                        child: Text(
-                          '$_balance ₪',
-                          style: TextStyle(
-                            fontSize: 30.0,
-                            color: Colors.white
-                          )
+                        child: FutureBuilder(
+                          future: HttpServices.getBalance(),
+                          builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+                            switch(snapshot.connectionState) {
+                              case ConnectionState.active:
+                              case ConnectionState.waiting:
+                                return CircularProgressIndicator();
+                              case ConnectionState.none:
+                              case ConnectionState.done:
+                                print('found balance');
+                                if(snapshot.hasData) {
+                                  return Text(
+                                    '${ snapshot.data } ₪',
+                                    style: TextStyle(
+                                      fontSize: 30.0,
+                                      color: Colors.white
+                                    )
+                                  );
+                                }
+                                
+                                return CircularProgressIndicator();
+
+                              default:
+                                return CircularProgressIndicator();
+                            }
+                          }
                         )
                       ),
                       decoration: BoxDecoration(

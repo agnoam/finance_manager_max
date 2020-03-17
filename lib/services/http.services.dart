@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://192.168.43.111:8810';
+  static String _devURL = 'http://192.168.1.22:8810';
   
   static String get serverURL {
    return _isDebug ? 
@@ -75,20 +75,20 @@ class HttpServices {
     try {
       UserCred creds = await _prepareCredentials();
       http.Response res = await http.post('$serverURL/app/get-balance', 
-      headers: { 'content-type': 'application/json' },
-      body: jsonEncode({
-        'creds': {
-          'id': creds.id,
-          'CredentialsHeaderName': creds.CredentialsHeaderName,
-          'CredentialsToken': creds.CredentialsToken
-        }
-      })
+        headers: { 'content-type': 'application/json' },
+        body: jsonEncode({
+          'creds': {
+            'id': creds.id,
+            'CredentialsHeaderName': creds.CredentialsHeaderName,
+            'CredentialsToken': creds.CredentialsToken
+          }
+        })
       );
 
       if(res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(res.body);
         BalanceResponse balance = BalanceResponse.fromJSON(body['d'][0]);
-        return balance.Current;
+        return balance.current;
       }
 
       throw 'Did not able to get balance';
@@ -127,29 +127,29 @@ class HttpServices {
 }
 
 class BalanceResponse {
-  String CurrencyIso;
-  double Current; // Balance
-  double Expected;
-  double Pending;
+  String currencyIso;
+  double current; // Balance
+  double expected;
+  double pending;
 
-  BalanceResponse({ this.CurrencyIso, this.Current, this.Expected, this.Pending });
+  BalanceResponse({ this.currencyIso, this.current, this.expected, this.pending });
 
   Map<String, dynamic> toJSON() {
     return {
-      'CurrencyIso': CurrencyIso,
-      'Content': Current,
-      'Expected': Expected,
-      'Pending': Pending
+      'CurrencyIso': currencyIso,
+      'Content': current,
+      'Expected': expected,
+      'Pending': pending
     };
   }
 
   static BalanceResponse fromJSON(Map<String, dynamic> json) {
     try {
       return BalanceResponse(
-        Current: double.parse(json['Current'].toString()), 
-        Expected: double.parse(json['Expected'].toString()), 
-        CurrencyIso: json['CurrencyIso'].toString(),
-        Pending: double.parse(json['Pending'].toString())
+        current: double.parse(json['Current'].toString()), 
+        expected: double.parse(json['Expected'].toString()), 
+        currencyIso: json['CurrencyIso'].toString(),
+        pending: double.parse(json['Pending'].toString())
       );
     } catch(ex) {
       throw ex;
