@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://192.168.42.194:8810';
+  static String _devURL = 'http://192.168.43.111:8810';
   
   static String get serverURL {
    return _isDebug ? 
@@ -78,16 +78,19 @@ class HttpServices {
         body: jsonEncode({
           'creds': {
             'id': creds.id,
-            'CredentialsHeaderName': creds.CredentialsHeaderName,
-            'CredentialsToken': creds.CredentialsToken
+            'CredentialsHeaderName': creds.credentialsHeaderName,
+            'CredentialsToken': creds.credentialsToken
           }
         })
       );
 
       if(res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(res.body);
-        BalanceResponse balance = BalanceResponse.fromJSON(body['d'][0]);
-        return balance.current;
+        if(body != null) {
+          BalanceResponse balance = BalanceResponse.fromJSON(body['d'][0]);
+          return balance.current;
+        }
+        return null;
       }
 
       throw 'Did not able to get balance';
@@ -105,8 +108,8 @@ class HttpServices {
         body: jsonEncode({
           'creds': {
             'id': creds.id,
-            'CredentialsHeaderName': creds.CredentialsHeaderName,
-            'CredentialsToken': creds.CredentialsToken
+            'CredentialsHeaderName': creds.credentialsHeaderName,
+            'CredentialsToken': creds.credentialsToken
           },
           'destAccID': destAccID,
           'amount': amount,
@@ -324,8 +327,8 @@ class User {
 class UserCred {
   // CoriunderCredentials
   String id;
-  String CredentialsToken; 
-  String CredentialsHeaderName;
+  String credentialsToken; 
+  String credentialsHeaderName;
   
   int expDate;
   
@@ -334,8 +337,8 @@ class UserCred {
   String password;
 
   UserCred(
-    this.CredentialsToken, 
-    this.CredentialsHeaderName, 
+    this.credentialsToken, 
+    this.credentialsHeaderName, 
     this.expDate, 
     this.email, 
     this.password,
@@ -344,8 +347,8 @@ class UserCred {
 
   Map<String, dynamic> toJSON() {
     return {
-      'CredentialsToken': CredentialsToken,
-      'CredentialsHeaderName': CredentialsHeaderName,
+      'CredentialsToken': credentialsToken,
+      'CredentialsHeaderName': credentialsHeaderName,
       'expDate': expDate,
       'email': email,
       'password': password,

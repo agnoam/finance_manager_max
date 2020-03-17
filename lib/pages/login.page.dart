@@ -165,18 +165,21 @@ class _LoginPageState extends State<LoginPage> {
                           onPressed: (EmailValidator.validate(_email) && _password.length > 4) ?
                             () async {
                               try {
+                                Dialogs.showLoadingSpinner(context);
                                 bool isLoggedIn = await HttpServices.login(emailPass: { 
                                   'email': _email, 
                                   'password': _password 
                                 });
 
                                 if(isLoggedIn) { 
+                                  Dialogs.hideLoadingSpinner(context);
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (BuildContext context) => HomePage()
                                     )
                                   );
                                 } else { 
+                                  Dialogs.hideLoadingSpinner(context);
                                   Dialogs.showAlert(context, 'There is no data to show');
                                 }
                               } catch(ex) {
