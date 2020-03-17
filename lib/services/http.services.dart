@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 class HttpServices {
   static bool _isDebug = true;
   static String _devURL = 'http://192.168.43.111:8810';
+  static Map<String, String> _defaultHeaders = { 'Content-Type': 'application/json' };
   
   static String get serverURL {
    return _isDebug ? 
@@ -74,7 +75,7 @@ class HttpServices {
     try {
       UserCred creds = await _prepareCredentials();
       http.Response res = await http.post('$serverURL/app/get-balance', 
-        headers: { 'content-type': 'application/json' },
+        headers: _defaultHeaders,
         body: jsonEncode({
           'creds': {
             'id': creds.id,
@@ -104,7 +105,7 @@ class HttpServices {
       UserCred creds = await _prepareCredentials();
       http.Response res = await http.post(
         '$serverURL/app/transfer-amount', 
-        headers: { 'content-type': 'application/json' },
+        headers: _defaultHeaders,
         body: jsonEncode({
           'creds': {
             'id': creds.id,
