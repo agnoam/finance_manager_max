@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://192.168.43.111:8810';
+  static String _devURL = 'http://192.168.42.194:8810';
   static Map<String, String> _defaultHeaders = { 'Content-Type': 'application/json' };
   
   static String get serverURL {
@@ -77,25 +77,25 @@ class HttpServices {
       UserCred creds = await _prepareCredentials();
       http.Response res = await http.post('$serverURL/app/get-balance', 
         headers: _defaultHeaders,
-        body: jsonEncode({
-          'creds': {
-            'id': creds.id,
-            'CredentialsHeaderName': creds.credentialsHeaderName,
-            'CredentialsToken': creds.credentialsToken
-          }
-        })
+        body: jsonEncode(buildCreds(creds))
       );
 
       if(res.statusCode == 200) {
         Map<String, dynamic> body = jsonDecode(res.body);
         if(body != null) {
-          BalanceResponse balance = BalanceResponse.fromJSON(body['d'][0]);
-          return balance.current;
+          List data = body['d'];
+          if(data.length > 0) {
+            BalanceResponse balance = BalanceResponse.fromJSON(body['d'][0]);
+            return balance.current;
+          } else {
+            return 0;
+          }
         }
+        
         return null;
       }
 
-      throw 'Did not able to get balance';
+      throw "Wasn't able to get balance";
     } catch(ex) {
       throw ex;
     }
@@ -104,15 +104,10 @@ class HttpServices {
   static Future<bool> transferMoney(String destAccID, double amount, String pinCode) async {
     try {
       UserCred creds = await _prepareCredentials();
-      http.Response res = await http.post(
-        '$serverURL/app/transfer-amount', 
-        headers: _defaultHeaders,
+
+      http.Response res = await http.post('$serverURL/app/transfer-amount', headers: _defaultHeaders,
         body: jsonEncode({
-          'creds': {
-            'id': creds.id,
-            'CredentialsHeaderName': creds.credentialsHeaderName,
-            'CredentialsToken': creds.credentialsToken
-          },
+          ...buildCreds(creds),
           'destAccID': destAccID,
           'amount': amount,
           'pinCode': pinCode,
@@ -127,6 +122,16 @@ class HttpServices {
     }
 
     return false;
+  }
+
+  static Map<String, dynamic> buildCreds(UserCred creds) {
+    return {
+      'creds': {
+        'id': creds.id,
+        'CredentialsHeaderName': creds.credentialsHeaderName,
+        'CredentialsToken': creds.credentialsToken
+      }
+    };
   }
 }
 
