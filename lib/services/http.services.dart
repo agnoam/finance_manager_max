@@ -271,22 +271,6 @@ class NewUserCred {
   }
 }
 
-// {
-// 	"data": {
-//     	"password": "aabb1122",
-//     	"pinCode": "1310"
-// 	},
-// 	"info": {
-// 		"addressLine": "barkat 14",
-//     	"city": "holon",
-//     	"country": "IL",
-//     	"email": "el@sapdan.com",
-//     	"firstname": "Yehuda",
-//     	"lastname": "D",
-//     	"postalCode": "00000"
-//     }
-// }
-
 class User {
   String username;
   String password;
