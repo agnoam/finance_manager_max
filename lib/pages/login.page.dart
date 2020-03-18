@@ -221,7 +221,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal:30.0),
                 child: Align(
                   alignment: Alignment.bottomLeft,
-                  child: Text('name', 
+                  child: Text('KidiCard', 
                     style:TextStyle(
                       color:Colors.white,
                       fontWeight: FontWeight.bold,

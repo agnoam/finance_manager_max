@@ -39,7 +39,7 @@ class HttpServices {
       http.Response res = await http.post('$serverURL/app/login', body: emailPass);
       if(res.statusCode == 200) {
         Map<String, dynamic> resBody = jsonDecode(res.body);      
-        
+
         if(resBody['auth'].toString().toLowerCase() == 'true') {
           Map<String, dynamic> creds = resBody['cred'];
           creds['expDate'] = resBody['expDate'];
@@ -59,8 +59,8 @@ class HttpServices {
   static Future<NewUserCred> signup({ NewUserCred userCred }) async {
     http.Response res = await http.post(
       '$serverURL/app/sign-up',
-      body: jsonEncode(userCred.toJSON()),
-      headers: {'content-type': 'application/json'}
+      headers: _defaultHeaders,
+      body: jsonEncode(userCred.toJSON())
     );
 
     if(res.statusCode == 200) {
