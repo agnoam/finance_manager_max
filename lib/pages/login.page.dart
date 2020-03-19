@@ -18,189 +18,6 @@ class _LoginPageState extends State<LoginPage> {
   String _email = '';
   String _password = '';
 
-  // The login modal function
-  void _loginModal(BuildContext context) {
-    // Reset the form
-    setState(() {
-      _email = '';
-      _password = '';
-    });
-
-    showModalBottomSheet(
-      context: context, 
-      isScrollControlled: true, 
-      builder: (BuildContext context) {
-        return Container(
-          height: MediaQuery.of(context).size.height * 0.6,
-          child: _buildLogin()
-        );
-      }
-    );
-  }
-
-  Widget _buildUser() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('Email', style: kLabelStyle),
-        SizedBox(height:10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            keyboardType: TextInputType.emailAddress,
-            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.email, color: Colors.black),
-              hintText: 'Enter Email...',
-              hintStyle: kHintTextStyle,
-            ),
-            onChanged: (String value) => setState(() => _email = value)
-          )
-        )
-      ]
-    );
-  }
-
-  Widget _buildPassword(){
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text('Password', style: kLabelStyle),
-        SizedBox(height:10.0),
-        Container(
-          alignment: Alignment.centerLeft,
-          decoration: kBoxDecorationStyle,
-          height: 60.0,
-          child: TextFormField(
-            obscureText: true,
-            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14.0),
-              prefixIcon: Icon(Icons.lock, color: Colors.black),
-              hintText: 'Enter Password...',
-              hintStyle: kHintTextStyle,
-            ),
-            onChanged: (String value) => setState(() => _password = value)
-          )
-        )
-      ]
-    );
-  }
-
-  Widget _buildLogin() {
-    return Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: Colors.black,
-      appBar: AppBar(
-        leading: GestureDetector(
-          child: Icon(
-            Icons.keyboard_arrow_down,
-            color: Colors.black
-          ),
-          onTap: () => Navigator.of(context).pop()
-        ),
-        backgroundColor: Colors.white,
-        title: Image.asset(
-          AssetsPaths.MaxLogo, 
-          width: 70
-        )
-      ),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Colors.cyan[400],
-              Colors.cyan[400],
-              Colors.cyan[200],
-              Colors.cyan[200],
-            ],
-            stops: [0.1, 0.4, 0.5, 0.7]
-          )
-        ),
-        child: ListView(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                children: <Widget> [
-                  SizedBox(height: 30.0),
-                  _buildUser(),
-                  SizedBox(height: 30.0),
-                  _buildPassword(),
-                  SizedBox(height:20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.3,
-                        child: RaisedButton(
-                          child: Text('Sign Up'),
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)
-                          ),
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => SignupPage()
-                              )
-                            );
-                          }
-                        )
-                      ),
-                      SizedBox(
-                        child: RaisedButton(
-                          child: Icon(Icons.arrow_forward),
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          onPressed: (EmailValidator.validate(_email) && _password.length > 4) ?
-                            () async {
-                              try {
-                                Dialogs.showLoadingSpinner(context);
-                                bool isLoggedIn = await HttpServices.login(emailPass: { 
-                                  'email': _email, 
-                                  'password': _password 
-                                });
-
-                                if(isLoggedIn) { 
-                                  Dialogs.hideLoadingSpinner(context);
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) => HomePage()
-                                    )
-                                  );
-                                } else { 
-                                  Dialogs.hideLoadingSpinner(context);
-                                  Dialogs.showAlert(context, 'There is no data to show');
-                                }
-                              } catch(ex) {
-                                print('login ex: $ex');
-                              }
-                            }
-                          :
-                            null
-                        )
-                      )
-                    ]
-                  )
-                ]
-              )
-            )
-          ]
-        )
-      )
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -257,13 +74,13 @@ class _LoginPageState extends State<LoginPage> {
                       children: <Widget>[
                         Padding(
                           padding: EdgeInsets.only(right: 10),
-                          child: Icon(Icons.keyboard_arrow_up, color: Colors.black),
+                          child: Icon(Icons.keyboard_arrow_up, color: Colors.black)
                         ),
                         Text(
                           'Login', 
                           style: TextStyle(
                             fontSize: 20.0,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w800
                           )
                         )
                       ]
@@ -272,6 +89,184 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 onTap: () => _loginModal(context),
                 onVerticalDragStart: (details) => _loginModal(context)
+              )
+            )
+          ]
+        )
+      )
+    );
+  }
+
+  // The login modal function
+  void _loginModal(BuildContext context) {
+    // Reset the form
+    setState(() {
+      _email = '';
+      _password = '';
+    });
+
+    showModalBottomSheet(
+      context: context, 
+      isScrollControlled: true, 
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.6,
+          child: _buildLogin()
+        );
+      }
+    );
+  }
+
+  Widget _buildEmail() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('Email', style: kLabelStyle),
+        SizedBox(height:10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.email, color: Colors.black),
+              hintText: 'Enter Email...',
+              hintStyle: kHintTextStyle
+            ),
+            onChanged: (String value) => setState(() => _email = value)
+          )
+        )
+      ]
+    );
+  }
+
+  Widget _buildPassword(){
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('Password', style: kLabelStyle),
+        SizedBox(height:10.0),
+        Container(
+          alignment: Alignment.centerLeft,
+          decoration: kBoxDecorationStyle,
+          height: 60.0,
+          child: TextFormField(
+            obscureText: true,
+            style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              contentPadding: EdgeInsets.only(top: 14.0),
+              prefixIcon: Icon(Icons.lock, color: Colors.black),
+              hintText: 'Enter Password...',
+              hintStyle: kHintTextStyle
+            ),
+            onChanged: (String value) => setState(() => _password = value)
+          )
+        )
+      ]
+    );
+  }
+
+  Widget _buildLogin() {
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        leading: GestureDetector(
+          child: Icon(
+            Icons.keyboard_arrow_down,
+            color: Colors.black
+          ),
+          onTap: () => Navigator.of(context).pop()
+        ),
+        backgroundColor: Colors.white,
+        title: Image.asset(AssetsPaths.MaxLogo, width: 70)
+      ),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.cyan[400],
+              Colors.cyan[400],
+              Colors.cyan[200],
+              Colors.cyan[200],
+            ],
+            stops: [0.1, 0.4, 0.5, 0.7]
+          )
+        ),
+        child: ListView(
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                children: <Widget> [
+                  SizedBox(height: 30.0),
+                  _buildEmail(),
+                  SizedBox(height: 30.0),
+                  _buildPassword(),
+                  SizedBox(height:20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        child: RaisedButton(
+                          child: Text('Sign Up'),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => SignupPage()
+                              )
+                            );
+                          }
+                        )
+                      ),
+                      SizedBox(
+                        child: RaisedButton(
+                          child: Icon(Icons.arrow_forward),
+                          color: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          onPressed: (EmailValidator.validate(_email) && _password.length > 4) ?
+                            () async {
+                              try {
+                                Dialogs.showLoadingSpinner(context);
+                                bool isLoggedIn = await HttpServices.login(emailPass: { 
+                                  'email': _email, 
+                                  'password': _password 
+                                });
+
+                                if(isLoggedIn) { 
+                                  Dialogs.hideLoadingSpinner(context);
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) => HomePage()
+                                    )
+                                  );
+                                } else { 
+                                  Dialogs.hideLoadingSpinner(context);
+                                  Dialogs.showAlert(context, 'There is no data to show');
+                                }
+                              } catch(ex) {
+                                print('login ex: $ex');
+                              }
+                            }
+                          :
+                            null
+                        )
+                      )
+                    ]
+                  )
+                ]
               )
             )
           ]

@@ -70,6 +70,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 8,
         child: Wrap(children: <Widget>[
         Container(
+          color:HexColor('#5dcbc7'),
           padding: EdgeInsets.only(left: 16, right: 16, top: 48),
           child: Column(
             children: <Widget>[
@@ -143,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                         )
                       ),
                       decoration: BoxDecoration(
-                        color: HexColor('#031851')
+                        color: HexColor('#5dcbc7')
                         /*gradient: LinearGradient(
                           
                           colors: [
