@@ -79,7 +79,7 @@ class _SendMoneyState extends State<SendMoney> {
                     }),
                     onChange4: (newVal) => setState(() { 
                       if(_currentPIN.length == 3 && newVal.length == 1){
-                      _pinFour = newVal;
+                        _pinFour = newVal;
                         _currentPIN += _pinFour;
                         print(_currentPIN);
                       }
@@ -103,6 +103,7 @@ class _SendMoneyState extends State<SendMoney> {
         inputFormatters:[
           LengthLimitingTextInputFormatter(1)
         ],
+        focusNode: FocusNode(),
         textInputAction: TextInputAction.next,
         onChanged: change,
         textAlign: TextAlign.center,

@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
   
-  Widget _tomExpenses() {
+  Widget _expenses() {
     return ListView(
       children: <Widget> [
         Card(

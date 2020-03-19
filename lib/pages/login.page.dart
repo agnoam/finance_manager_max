@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
       isScrollControlled: true, 
       builder: (BuildContext context) {
         return Container(
-          height: MediaQuery.of(context).size.height * 0.6,
+          height: MediaQuery.of(context).size.height * 0.7,
           child: _buildLogin()
         );
       }

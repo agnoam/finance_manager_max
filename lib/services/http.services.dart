@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://192.168.42.194:8810';
+  static String _devURL = 'http://192.168.1.19:8810';
   static Map<String, String> _defaultHeaders = { 'Content-Type': 'application/json' };
   
   static String get serverURL {
