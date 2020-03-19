@@ -18,8 +18,6 @@ final String cvvCode;
 }
 
 class _CardInfoState extends State<CardInfo> {
-
-
   Widget page(BuildContext context) { 
     return Material(
       child: Container(
@@ -40,8 +38,7 @@ class _CardInfoState extends State<CardInfo> {
           //     mainAxisSize: MainAxisSize.max,
           //     crossAxisAlignment: CrossAxisAlignment.stretch,
           //     children: <Widget>[
-                
-          //       //insert real card info here^ 
+          //       // insert real card info here ^ 
           //     ]
           //   ),
           //   Column(
@@ -116,9 +113,9 @@ class _CardInfoState extends State<CardInfo> {
           //     )
           //   ]
           )
-        )
-      );
-    }
+      )
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
