@@ -1,6 +1,3 @@
-import 'package:finance_manager/pages/home.page.dart';
-import 'package:finance_manager/services/http.services.dart';
-import 'package:finance_manager/widgets/constants.widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/services.dart';
@@ -21,6 +18,31 @@ class _SendMoneyState extends State<SendMoney> {
   String _pinTwo = "";
   String _pinThree = "";
   String _pinFour = "";
+
+  FocusNode _first;
+  FocusNode _sec;
+  FocusNode _third;
+  FocusNode _last;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _first = FocusNode();
+    _sec = FocusNode();
+    _third = FocusNode();
+    _last = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _first.dispose();
+    _sec.dispose();
+    _third.dispose();
+    _last.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,53 +78,67 @@ class _SendMoneyState extends State<SendMoney> {
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   _buildPinRow(
-                    onChange1: (newVal) => setState(()  {
+                    focusNode1: _first,
+                    onChange1: (String newVal) => setState(()  {
                       if(newVal.length == 1 && _currentPIN.length < 1) {
                         _pinOne = newVal;
                         _currentPIN += _pinOne;
                         print(_currentPIN);
+                        _sec.requestFocus();
                       }
                     }),
-                    onChange2: (newVal) => setState(()  {
+                    focusNode2: _sec,
+                    onChange2: (String newVal) => setState(()  {
                       if(_currentPIN.length == 1 && newVal.length == 1) {
                         _pinTwo = newVal;
                         _currentPIN += _pinTwo;
                         print(_currentPIN);
+
+                        _third.requestFocus();
+                      } else if(newVal.isEmpty) {
+                        _first.requestFocus();
                       }
                     }),
-                    onChange3: (newVal) => setState(() { 
+                    focusNode3: _third,
+                    onChange3: (String newVal) => setState(() { 
                       if(_currentPIN.length == 2 && newVal.length == 1) {
                         _pinThree = newVal;
                         _currentPIN += _pinThree;
                         print(_currentPIN);
+                        
+                        _last.requestFocus();
+                      } else if(newVal.isEmpty) {
+                        _sec.requestFocus();
                       }
                     }),
-                    onChange4: (newVal) => setState(() { 
+                    focusNode4: _last,
+                    onChange4: (String newVal) => setState(() { 
                       if(_currentPIN.length == 3 && newVal.length == 1){
-                      _pinFour = newVal;
+                        _pinFour = newVal;
                         _currentPIN += _pinFour;
                         print(_currentPIN);
+                      } else if(newVal.isEmpty) {
+                        _third.requestFocus();
                       }
-                    }),
+                    })
                   )
                 ]
-              ),
+              )
             ]
           )
-        ),
+        )
       )
     );
   }
 
-  _buildPInput(Function change) {
+  _buildPInput(Function change, FocusNode focusNode) {
     return Container(
       alignment: Alignment.center,
       height: 60,
       width: 60,
       child: TextField(
-        inputFormatters:[
-          LengthLimitingTextInputFormatter(1)
-        ],
+        focusNode: focusNode,
+        inputFormatters:[LengthLimitingTextInputFormatter(1)],
         textInputAction: TextInputAction.next,
         onChanged: change,
         textAlign: TextAlign.center,
@@ -115,23 +151,29 @@ class _SendMoneyState extends State<SendMoney> {
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: HexColor('#ff6a64'))),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: HexColor('#ff6a64')))
-        ),
+        )
         // obscureText: true,
       )
     );
   }
-  //function for PIN Code inputs
-  Widget _buildPinRow({Function onChange1, Function onChange2, Function onChange3, Function onChange4 }) {
+
+  // Function for PIN Code inputs
+  Widget _buildPinRow({ 
+    Function onChange1, FocusNode focusNode1, 
+    Function onChange2, FocusNode focusNode2, 
+    Function onChange3, FocusNode focusNode3,
+    Function onChange4, FocusNode focusNode4
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[ 
-            _buildPInput(onChange1),
-            _buildPInput(onChange2),
-            _buildPInput(onChange3),
-            _buildPInput(onChange4)
+          children: <Widget>[
+            _buildPInput(onChange1, focusNode1),
+            _buildPInput(onChange2, focusNode2),
+            _buildPInput(onChange3, focusNode3),
+            _buildPInput(onChange4, focusNode4)
           ]
         )
       ]
