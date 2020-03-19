@@ -15,12 +15,16 @@ class HomePage extends StatefulWidget {
 }
 class _HomePageState extends State<HomePage> {
   bool _isCollapsed = true;
-  double screenWidth, screenHeight, _balance;
-  final Duration duration = Duration(milliseconds: 300);
+  double _screenWidth, _screenHeight;
+  final Duration _duration = Duration(milliseconds: 300);
        
   @override
   void initState() {
     super.initState();
+
+    Size size = MediaQuery.of(context).size;
+    _screenHeight = size.height;
+    _screenWidth = size.width;
   }
 
   Widget menu(context){
@@ -55,11 +59,11 @@ class _HomePageState extends State<HomePage> {
 
   Widget page(context) {
     return AnimatedPositioned(
-      duration: duration,
-      top: _isCollapsed ? 0 : 0.2 * screenHeight,
-      bottom: _isCollapsed ? 0 : 0.2 * screenWidth,
-      left: _isCollapsed ? 0 : 0.6 * screenWidth,
-      right: _isCollapsed ? 0 : -0.4 * screenWidth,
+      duration: _duration,
+      top: _isCollapsed ? 0 : 0.2 * _screenHeight,
+      bottom: _isCollapsed ? 0 : 0.2 * _screenWidth,
+      left: _isCollapsed ? 0 : 0.6 * _screenWidth,
+      right: _isCollapsed ? 0 : -0.4 * _screenWidth,
       child: Material(
         animationDuration: Duration(milliseconds: 3000),
         borderRadius: BorderRadius.all(Radius.circular(40)),
@@ -264,17 +268,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    screenHeight = size.height;
-    screenWidth = size.width;
     return Scaffold(
       body: Stack(
         children: <Widget>[
           menu(context),
-           page(context)
-         
-          
-        ],
+          page(context)
+        ]
       )
     );
   }

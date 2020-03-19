@@ -37,7 +37,7 @@ class HttpServices {
   static Future<bool> login({ Map<String, String> emailPass }) async {
     try {
       http.Response res = await http.post('$serverURL/app/login', body: emailPass);
-      if(res.statusCode == 200) {
+      if(res.statusCode == ResponseStatus.Ok) {
         Map<String, dynamic> resBody = jsonDecode(res.body);      
 
         if(resBody['auth'].toString().toLowerCase() == 'true') {
@@ -63,13 +63,14 @@ class HttpServices {
       body: jsonEncode(userCred.toJSON())
     );
 
-    if(res.statusCode == 200) {
+    if(res.statusCode == ResponseStatus.Ok) {
       Map<String, dynamic> resBody = jsonDecode(res.body);
 
       if(resBody['isCreated'].toString().toLowerCase() == 'true'){
         return NewUserCred.fromJSON(resBody['user']);
       }
     }
+
     return null;
   }
 
@@ -78,10 +79,10 @@ class HttpServices {
       UserCred creds = await _prepareCredentials();
       http.Response res = await http.post('$serverURL/app/get-balance', 
         headers: _defaultHeaders,
-        body: jsonEncode(buildCreds(creds))
+        body: jsonEncode(_buildCreds(creds))
       );
 
-      if(res.statusCode == 200) {
+      if(res.statusCode == ResponseStatus.Ok) {
         Map<String, dynamic> body = jsonDecode(res.body);
         if(body != null) {
           List data = body['d'];
@@ -105,10 +106,9 @@ class HttpServices {
   static Future<bool> transferMoney(String destAccID, double amount, String pinCode) async {
     try {
       UserCred creds = await _prepareCredentials();
-
       http.Response res = await http.post('$serverURL/app/transfer-amount', headers: _defaultHeaders,
         body: jsonEncode({
-          ...buildCreds(creds),
+          ..._buildCreds(creds),
           'destAccID': destAccID,
           'amount': amount,
           'pinCode': pinCode,
@@ -117,7 +117,7 @@ class HttpServices {
         })
       );
 
-      return res.statusCode == 200;
+      return res.statusCode == ResponseStatus.Ok;
     } catch(ex) {
       print('http ex, $ex');
     }
@@ -125,13 +125,141 @@ class HttpServices {
     return false;
   }
 
-  static Map<String, dynamic> buildCreds(UserCred creds) {
+  static Map<String, dynamic> _buildCreds(UserCred creds) {
     return {
       'creds': {
         'id': creds.id,
         'CredentialsHeaderName': creds.credentialsHeaderName,
         'CredentialsToken': creds.credentialsToken
       }
+    };
+  }
+
+  static Future<List<Page>> getRows({ 
+    String currencyIso = 'ILS', 
+    int pageNumber = 1, 
+    int pageSize = 20 
+  }) async {
+    try {
+      UserCred creds = await _prepareCredentials();
+      http.Response res = await http.post('$serverURL/app/get-rows', headers: _defaultHeaders, 
+        body: jsonEncode({
+          ..._buildCreds(creds), 'filters': { 'CurrencyIso': currencyIso }, 
+          'sortAndPage': { 'PageNumber': pageNumber, 'PageSize': pageSize }
+        }
+      ));
+
+      if(res.statusCode == ResponseStatus.Ok) {
+        Map<String, dynamic> resBody = jsonDecode(res.body);
+        List<Map<String, dynamic>> pagesBuffer = resBody['data'];
+        List<Page> toReturn = [];
+
+        for(Map<String, dynamic> pageJson in pagesBuffer) {
+          toReturn.add(Page.fromJSON(pageJson));
+        }
+
+        return toReturn;
+      }
+
+      return null;
+    } catch(ex) {
+      throw ex;
+    }
+  }
+}
+
+class Page {
+  int amount;
+  String balanceTransferType;
+  String balanceTransferTypeName;
+  String comment;
+  String currencyIso;
+  int id;
+  String insertDate;
+  bool isPending;
+  int sourceAccountID;
+  String sourceAccountName;
+  String sourceAccountProfileImage;
+  int sourceAccountProfileImageSize;
+  String sourceAccountType;
+  int sourceID;
+  String sourceType;
+  int targetAccountID;
+  String targetAccountName;
+  String targetAccountProfileImage;
+  int targetAccountProfileImageSize;
+  String targetAccountType;
+  String text;
+  double total;
+
+  Page({ 
+    this.amount, this.balanceTransferType, 
+    this.balanceTransferTypeName, this.comment, 
+    this.currencyIso, this.id, this.insertDate,
+    this.isPending, this.sourceAccountID, 
+    this.sourceAccountName, this.sourceAccountProfileImage, 
+    this.sourceAccountProfileImageSize,
+    this.sourceAccountType, this.sourceID, this.sourceType, 
+    this.targetAccountID, this.targetAccountName, this.targetAccountProfileImage, 
+    this.targetAccountProfileImageSize, this.targetAccountType, 
+    this.text, this.total
+  });
+
+  static Page fromJSON(Map<String, dynamic> json) {
+    try {
+      return Page(
+        amount: int.parse(json['Amount'].toString()),
+        balanceTransferType: json['BalanceTransferType'].toString(),
+        balanceTransferTypeName: json['BalanceTransferTypeName'].toString(),
+        comment: json['Comment'].toString(),
+        currencyIso: json['CurrencyIso'].toString(),
+        id: int.parse(json['ID'].toString()),
+        insertDate: json['InsertDate'].toString(),
+        isPending: json['IsPending'].toString().toLowerCase() == 'true',
+        sourceAccountID: int.parse(json['SourceAccountID'].toString()),
+        sourceAccountName: json['SourceAccountName'].toString(),
+        sourceAccountProfileImage: json['SourceAccountProfileImage'].toString(),
+        sourceAccountProfileImageSize: int.parse(json['SourceAccountProfileImageSize'].toString()),
+        sourceAccountType: json['SourceAccountType'].toString(),
+        sourceID: int.parse(json['SourceID'].toString()),
+        sourceType: json['SourceType'].toString(),
+        targetAccountID: int.parse(json['TargetAccountID'].toString()),
+        targetAccountName: json['TargetAccountName'].toString(),
+        targetAccountProfileImage: json['TargetAccountProfileImage'].toString(),
+        targetAccountProfileImageSize: int.parse(json['TargetAccountProfileImageSize'].toString()),
+        targetAccountType: json['TargetAccountType'].toString(),
+        text: json['Text'].toString(),
+        total: double.parse(json['Total'].toString())
+      );
+    } catch(ex) {
+      throw 'generate page from json ex: $ex';
+    }
+  }
+
+  Map<String, dynamic> toJSON() {
+    return {
+      'Amount': amount,
+      'BalanceTransferType': balanceTransferType,
+      'BalanceTransferTypeName': balanceTransferTypeName,
+      'Comment': comment,
+      'CurrencyIso': currencyIso,
+      'ID': id,
+      'InsertDate': insertDate,
+      'IsPending': isPending,
+      'SourceAccountID': sourceAccountID,
+      'SourceAccountName': sourceAccountName,
+      'SourceAccountProfileImage': sourceAccountProfileImage,
+      'SourceAccountProfileImageSize': sourceAccountProfileImageSize,
+      'SourceAccountType': sourceAccountType,
+      'SourceID': sourceID,
+      'SourceType': sourceType,
+      'TargetAccountID': targetAccountID,
+      'TargetAccountName': targetAccountName,
+      'TargetAccountProfileImage': targetAccountProfileImage,
+      'TargetAccountProfileImageSize': targetAccountProfileImageSize,
+      'TargetAccountType': targetAccountType,
+      'Text': text,
+      'Total': total
     };
   }
 }
@@ -367,4 +495,17 @@ class UserCred {
   String toString() {
     return toJSON().toString();
   }
+}
+
+class ResponseStatus {
+  static const int NoContent = 204;
+  static const int NotFound = 404;
+  static const int BadRequest = 400;
+  static const int Unauthorized = 401;
+  static const int InternalError = 500;
+  static const int NotImplemented = 501;
+  static const int Ok = 200;
+  static const int Created = 201;
+  static const int Accepted = 202;
+  static const int Found = 302;
 }
