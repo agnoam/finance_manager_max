@@ -1,3 +1,4 @@
+import 'package:finance_manager/services/theme.services.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/pages/login.page.dart';
 
@@ -9,6 +10,7 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: DefaultTheme,
       home: LoginPage()
     );
   }

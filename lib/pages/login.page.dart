@@ -247,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                 if(isLoggedIn) { 
                                   Dialogs.hideLoadingSpinner(context);
-                                  Navigator.of(context).push(
+                                  Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                       builder: (BuildContext context) => HomePage()
                                     )

@@ -140,7 +140,6 @@ class _SendMoneyState extends State<SendMoney> {
 
   // function for the label and input of a plain input
   Widget _buildPlain({ Function onChange, String label }) {
-
     double _storeWidth = MediaQuery.of(context).size.width;
 
     return Container(

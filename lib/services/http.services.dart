@@ -4,7 +4,7 @@ import 'package:http/http.dart' as http;
 
 class HttpServices {
   static bool _isDebug = true;
-  static String _devURL = 'http://192.168.1.22:8810';
+  static String _devURL = 'http://192.168.42.194:8810';
   static Map<String, String> _defaultHeaders = { 'Content-Type': 'application/json' };
   
   static String get serverURL {
@@ -151,10 +151,10 @@ class HttpServices {
 
       if(res.statusCode == ResponseStatus.Ok) {
         Map<String, dynamic> resBody = jsonDecode(res.body);
-        List<Map<String, dynamic>> pagesBuffer = resBody['data'];
+        List pagesBuffer = resBody['data'];
         List<Page> toReturn = [];
 
-        for(Map<String, dynamic> pageJson in pagesBuffer) {
+        for(Map pageJson in pagesBuffer) {
           toReturn.add(Page.fromJSON(pageJson));
         }
 
