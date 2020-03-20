@@ -1,3 +1,4 @@
+import 'package:finance_manager/services/http.services.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,6 @@ class SendMoney extends StatefulWidget {
 
 class _SendMoneyState extends State<SendMoney> {
   double _amount = 0;
-  String _pinCode;
   String _destID;
 
   String _currentPIN = "";
@@ -55,12 +55,14 @@ class _SendMoneyState extends State<SendMoney> {
               SizedBox(height: MediaQuery.of(context).size.height * 0.10),
               _buildPlain(
                 label: 'How much?',
-                onChange: (newVal) => setState(() => _destID = newVal)
+                onChange: (newVal) => setState(() => _amount = double.parse(newVal)),
+                typeis: TextInputType.number
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               _buildPlain(
                 label: 'Who to?',
-                onChange: (newVal) => setState(() => _destID = newVal)
+                onChange: (newVal) => setState(() => _destID = newVal),
+                typeis: TextInputType.text
               ),
               Container(
                 alignment: Alignment(0, 0.5),
@@ -68,6 +70,7 @@ class _SendMoneyState extends State<SendMoney> {
               ),
               Column(
                 children: <Widget>[
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   Text(
                     'Security PIN', 
                     style: TextStyle(
@@ -76,7 +79,7 @@ class _SendMoneyState extends State<SendMoney> {
                       fontWeight: FontWeight.bold
                     )
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.02),
                   _buildPinRow(
                     focusNode1: _first,
                     onChange1: (String newVal) => setState(()  {
@@ -121,6 +124,39 @@ class _SendMoneyState extends State<SendMoney> {
                         _third.requestFocus();
                       }
                     })
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.15),
+                  RaisedButton(
+                    color: HexColor('#ff6a64'),
+                    onPressed: () async {
+                      bool transfered = await HttpServices.transferMoney(_destID, _amount, _currentPIN);
+                      if(transfered) {
+                        Dialogs.showAlert(
+                          context, 
+                          'Money Transfered successfuly', 
+                          onResolve: () => Navigator.of(context).pop()
+                        );
+                      } else {
+                        Dialogs.showAlert(
+                          context, 
+                          'Money transfer failed', 
+                          onResolve: () => Navigator.of(context).pop()
+                        );
+                      }
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                        horizontal:MediaQuery.of(context).size.width * 0.3,
+                        vertical:MediaQuery.of(context).size.height * 0.01
+                        ),
+                      child: Text(
+                        'Send', 
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30
+                        )
+                      ),
+                    )
                   )
                 ]
               )
@@ -151,8 +187,8 @@ class _SendMoneyState extends State<SendMoney> {
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: HexColor('#ff6a64'))),
           focusedBorder: UnderlineInputBorder(borderSide: BorderSide(color: HexColor('#ff6a64')))
-        )
-        // obscureText: true,
+        ),
+        obscureText: true
       )
     );
   }
@@ -181,7 +217,7 @@ class _SendMoneyState extends State<SendMoney> {
   }
 
   // function for the label and input of a plain input
-  Widget _buildPlain({ Function onChange, String label }) {
+  Widget _buildPlain({ Function onChange, String label, TextInputType typeis, }) {
     double _storeWidth = MediaQuery.of(context).size.width;
 
     return Container(
@@ -189,6 +225,7 @@ class _SendMoneyState extends State<SendMoney> {
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: _storeWidth * 0.05),
         child: TextField(
+          keyboardType: typeis,
           style: TextStyle(fontSize: 30.0),
           cursorColor: HexColor('#ff6a64'),
           strutStyle: StrutStyle(fontSize: 30.0),
