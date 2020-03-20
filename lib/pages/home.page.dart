@@ -5,6 +5,7 @@ import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/utils/constants.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomePage extends StatefulWidget {
   // final Card; after choosing a card
@@ -23,6 +24,30 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: Theme.of(context).primaryColor,
+      systemNavigationBarIconBrightness: Brightness.light
+    )
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    screenHeight = size.height;
+    screenWidth = size.width;
+    return Scaffold(
+      body: Stack(
+        children: <Widget>[
+          menu(context),
+           page(context)
+        ],
+      )
+    );
+  }
+
+  //builds the sidenav
   Widget menu(context){
     return Padding(
       padding: EdgeInsets.only(left: 16.0),
@@ -39,7 +64,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 10),
             Text('Gifts', style: TextStyle(color: Colors.black, fontSize: 22)),
             SizedBox(height: 10),
-            Text('Messages & Requests', style: TextStyle(color: Colors.black, fontSize: 22)),
+            Text('Messages', style: TextStyle(color: Colors.black, fontSize: 22)),
             SizedBox(height: 10),
             Text('Expenses', style: TextStyle(color: Colors.black, fontSize: 22)),
             SizedBox(height: 10),
@@ -51,8 +76,9 @@ class _HomePageState extends State<HomePage> {
         )
       )
     );
-}
+  }
 
+  //builds the whole page
   Widget page(context) {
     return AnimatedPositioned(
       duration: duration,
@@ -62,7 +88,6 @@ class _HomePageState extends State<HomePage> {
       right: _isCollapsed ? 0 : -0.4 * screenWidth,
       child: Material(
         animationDuration: Duration(milliseconds: 3000),
-        borderRadius: BorderRadius.all(Radius.circular(40)),
         elevation: 8,
         child: Wrap(children: <Widget>[
         Container(
@@ -85,7 +110,7 @@ class _HomePageState extends State<HomePage> {
                       });
                     },
                   ),
-                  Text('Balance', style: TextStyle(fontSize: 20)),
+                  Text(AppVariables.ApplicationName, style: TextStyle(fontSize: 20)),
                   InkWell(
                     child: Icon(
                       Icons.credit_card, 
@@ -99,183 +124,112 @@ class _HomePageState extends State<HomePage> {
                 ]
               ),
               Column(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   Card(
                     margin: EdgeInsets.symmetric(vertical: 20.0),
                     color: Colors.white,
                     child: Container(
+                      width: MediaQuery.of(context).size.width,
+                      height: MediaQuery.of(context).size.height / 4,
+                      child: Center(child: _balanceWidget()),
                       padding: EdgeInsets.symmetric(
                         vertical: MediaQuery.of(context).size.height * 0.08
                       ),
-                      child: Center(
-                        child: FutureBuilder(
-                          future: HttpServices.getBalance(),
-                          builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-                            switch(snapshot.connectionState) {
-                              case ConnectionState.active:
-                              case ConnectionState.waiting:
-                                return CircularProgressIndicator();
-                              case ConnectionState.none:
-                              case ConnectionState.done:
-                                print('found balance');
-                                if(snapshot.hasData) {
-                                  return Text(
-                                    '$_balance ₪',
-                                    style: TextStyle(
-                                      fontSize: 30.0,
-                                      color: Colors.white
-                                    )
-                                  );
-                                }
-                                
-                                return CircularProgressIndicator();
-
-                              default:
-                                return Text('Please wait...');
-                            }
-                          }
-                        )
-                      ),
-                      decoration: BoxDecoration(
-                        color: HexColor('#031851')
-                        /*gradient: LinearGradient(
-                          
-                          colors: [
-                            HexColor('#5dcbc7'),
-                            HexColor('#031851')
-                          ]
-                        )*/
-                      ),
                     )
                   ),
-                  
-                  SizedBox(height: 5.0),
-                  Card(
-                    margin: EdgeInsets.symmetric(vertical: 20.0),
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(40.0))
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: MediaQuery.of(context).size.height * 0.04
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10.0, 0, 0, 5.0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Expenses',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black
-                                )
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '-240 for Yuda supermarket',
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold
-                              )
-                            ),
-                          ),
-                        ]
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 0.5, color: Colors.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(40.0))
-                      ),
-                    )
-                  ),
-                  SizedBox(height: 5.0),
-                  Card(
-                    margin: EdgeInsets.symmetric(vertical: 20.0),
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(40.0))
-                    ),
-                    child: Container(
-                      padding: EdgeInsets.symmetric(
-                        vertical: MediaQuery.of(context).size.height * 0.04
-                      ),
-                      child: Column(
-                        children: <Widget>[
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(10.0, 0, 0, 5.0),
-                            child: Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                'Transactions',
-                                style: TextStyle(
-                                  fontSize: 20.0,
-                                  color: Colors.black
-                                )
-                              ),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              '+300 from kobi',
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold
-                              )
-                            ),
-                          ),
-                        ]
-                      ),
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 0.5, color: Colors.grey),
-                        borderRadius: BorderRadius.all(Radius.circular(40.0))
-                      ),
-                    )
-                  ),
-
-          
-                  FloatingActionButton.extended(
-                  onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SendMoney()));
-                  },
-                  icon: Icon(Icons.send,),
-                  label: Text("send", style: TextStyle(fontSize: 20),),
-                  backgroundColor:HexColor("#031851") ,),
-                
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 2,
+                    child: _lastActions()
+                  )
                 ]
+              ),
+              FloatingActionButton(
+                tooltip: 'Transfer money',
+                child: Icon(FontAwesomeIcons.coins),
+                backgroundColor: Theme.of(context).primaryColorDark,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (BuildContext context) => SendMoney())
+                  );
+                }
               )
-            ],
-          ),
+            ]
+          )
         )
         ]
       )
       ),
     );
-}
+  }
 
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    screenHeight = size.height;
-    screenWidth = size.width;
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          menu(context),
-           page(context)
-         
-          
-        ],
-      )
+  Widget _balanceWidget() {
+    return FutureBuilder(
+      future: HttpServices.getBalance(),
+      builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+        switch(snapshot.connectionState) {
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+            
+          case ConnectionState.none:
+          case ConnectionState.done:
+            if(snapshot.hasData) {
+              return Text(
+                '₪ ${ snapshot.data }',
+                style: TextStyle(
+                  fontSize: 35.0,
+                  color: Colors.black,
+                )
+              );
+            }
+            
+            return CircularProgressIndicator();
+
+          default:
+            return CircularProgressIndicator();
+        }
+      }
     );
   }
+
+  Widget _lastActions() {
+    return FutureBuilder(
+      future: HttpServices.getRows(pageSize: 10),
+      builder: (BuildContext context, AsyncSnapshot<List<Page>> snapshot) {
+        switch(snapshot.connectionState) {
+          case ConnectionState.active:
+          case ConnectionState.waiting:
+            return CircularProgressIndicator();
+
+          case ConnectionState.none:
+          case ConnectionState.done:
+            if(snapshot.hasData) {
+              return ListView.builder(
+                itemCount: snapshot.data.length,
+                itemBuilder: (BuildContext context, int index) {
+                  Page data = snapshot.data[index];
+
+                  return ListTile(
+                    leading: data.amount > 0 ? 
+                      Icon(Icons.arrow_upward, color: Colors.green) 
+                    : 
+                      Icon(Icons.arrow_downward, color: Colors.red)
+                    ,
+                    title: Text('₪ ${ data.amount.toString() }'),
+                    subtitle: Text(data.text)
+                  );
+                }
+              );
+            }
+            
+            return CircularProgressIndicator();
+
+          default:
+            return CircularProgressIndicator();
+        }
+      }
+    );
+  }
+
 }
