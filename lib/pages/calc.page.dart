@@ -1,6 +1,8 @@
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/material.dart';
 
+import 'cards.page.dart';
+
 class Calc extends StatefulWidget {
   @override
   _CalcState createState() => _CalcState();
@@ -26,7 +28,8 @@ class _CalcState extends State<Calc> {
   String _output = "0";
   double num1 = 0.0;
   double num2 = 0.0;
-  String operand = "";
+  String operandFrom = "";
+  String operandTo = "";
 
   List<Currencies> _currencies = Currencies.getCurrencies();
   List<DropdownMenuItem<Currencies>> _dropItems;
@@ -59,16 +62,37 @@ class _CalcState extends State<Calc> {
 
   valueChange() {
     if(_output.length > 0 && double.parse(_output) > 0){
-
       if(_selectCurrency.name == "ILS"){
-        _exchangeVal =  (double.parse(_output) * _toCurrency.exch).toStringAsFixed(3);
+        _exchangeVal =  (double.parse(_output) * _toCurrency.exch).toStringAsFixed(2);
       }else if(_toCurrency.name == "ILS") {
-        _exchangeVal =  (double.parse(_output) / _selectCurrency.exch).toStringAsFixed(3);
+        _exchangeVal =  (double.parse(_output) / _selectCurrency.exch).toStringAsFixed(2);
       }else {
-        _exchangeVal =  (double.parse(_output) * _toCurrency.exch / _selectCurrency.exch).toStringAsFixed(3);
+        _exchangeVal =  (double.parse(_output) * _toCurrency.exch / _selectCurrency.exch).toStringAsFixed(2);
       }
-      
-      // _exchangeVal = ( double.parse(_output) / _selectCurrency.exch * _toCurrency.exch).toString();
+    }
+
+    switch(_selectCurrency.name) {
+      case "ILS":
+        operandFrom = "₪";
+      break;
+      case "EUR":
+        operandFrom = "€";
+      break;
+      case "USD":
+        operandFrom = "\u0024";
+      break;
+    }
+
+    switch(_toCurrency.name) {
+      case "ILS":
+        operandTo = "₪";
+      break;
+      case "EUR":
+        operandTo = "€";
+      break;
+      case "USD":
+        operandTo = "\u0024";
+      break;
     }
   }
 
@@ -78,7 +102,6 @@ class _CalcState extends State<Calc> {
       _exchangeVal = "0";
       num1 = 0.0;
       num2 = 0.0;
-      operand = "";
 
       setState(() => _output = _output);
     } else if(double.parse(_output) < 1000000) {
@@ -98,9 +121,6 @@ class _CalcState extends State<Calc> {
 
     valueChange();
   }
-
-  // String _inputCurrncy = Currency.ILS;
-  // String _outputCurrncy = Currency.USD;
 
   Widget _buildButton(String buttonText) {
     return Expanded(
@@ -122,7 +142,7 @@ class _CalcState extends State<Calc> {
       _selectCurrency = selectCurrency;
     });
   }
-    onChangedDropdownItem2(Currencies toCurrency) {
+  onChangedDropdownItem2(Currencies toCurrency) {
     valueChange();
     setState(() {
       _toCurrency = toCurrency;
@@ -140,12 +160,12 @@ class _CalcState extends State<Calc> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Container(
-                  // alignment: Alignment.centerLeft,
                   padding: EdgeInsets.symmetric(vertical: 40.0, horizontal: 20.0),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        _output, 
+                         '$operandFrom $_output', 
                         style: TextStyle(
                           fontSize: 50.0,
                           color: Colors.white,
@@ -153,7 +173,7 @@ class _CalcState extends State<Calc> {
                         )
                       ),
                       Text(
-                        _exchangeVal, 
+                        '$operandTo $_exchangeVal', 
                         style: TextStyle(
                           fontSize: 50.0,
                           color: HexColor('#f7f7f7').withOpacity(0.4),
@@ -197,8 +217,36 @@ class _CalcState extends State<Calc> {
                         padding: EdgeInsets.symmetric(horizontal:5.0, vertical: 15.0),
                         child: IconButton(
                           onPressed: () {
+                            print('asfsa');
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (BuildContext context) => CardsPage())
+                            );
+                          },
+                          icon: Icon(
+                            Icons.credit_card, 
+                            size: 40.0,
+                            ),
+                          ),
+                        color: HexColor('#ededed'),
+                        textColor: HexColor('#121237'),
+                        onPressed: () {
+                          print('asfsa');
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) => CardsPage())
+                          );
+                        },
+                      )
+                    ),
+                    Expanded(
+                      child: OutlineButton(
+                        padding: EdgeInsets.symmetric(horizontal:5.0, vertical: 15.0),
+                        child: IconButton(
+                          onPressed: () {
                             int lengt = _output.length;
-                            _output = _output.substring(0, lengt - 1);
+                            setState(() {
+                              _output = lengt > 1? _output.substring(0, lengt - 1) : "0";
+                              _exchangeVal = _output == "0" ? "0": _exchangeVal;
+                            });
                           },
                           icon: Icon(
                             Icons.backspace, 
@@ -207,9 +255,7 @@ class _CalcState extends State<Calc> {
                           ),
                         color: HexColor('#ededed'),
                         textColor: HexColor('#121237'),
-                        onPressed: () {
-                          // buttonPressed();
-                        } 
+                        onPressed: () {}
                       )
                     )
                   ]

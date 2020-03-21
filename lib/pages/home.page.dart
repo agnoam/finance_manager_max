@@ -6,6 +6,9 @@ import 'package:finance_manager/utils/constants.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter/services.dart';
+
+import 'calc.page.dart';
 
 class HomePage extends StatefulWidget {
   // final Card; after choosing a card
@@ -16,7 +19,7 @@ class HomePage extends StatefulWidget {
 }
 class _HomePageState extends State<HomePage> {
   bool _isCollapsed = true;
-  double screenWidth, screenHeight, _balance;
+  double screenWidth, screenHeight;
   final Duration duration = Duration(milliseconds: 300);
        
   @override
@@ -24,19 +27,20 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  SystemChrome.setSystemUIOverlayStyle(
-    SystemUiOverlayStyle(
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: Theme.of(context).primaryColor,
-      systemNavigationBarIconBrightness: Brightness.light
-    )
-  );
-
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     screenHeight = size.height;
     screenWidth = size.width;
+
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Theme.of(context).primaryColor,
+        systemNavigationBarIconBrightness: Brightness.light
+      )
+    );
+
     return Scaffold(
       body: Stack(
         children: <Widget>[
@@ -58,20 +62,45 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Image.asset(AssetsPaths.MaxLogo, width: 70.0, height:40.0),
-            SizedBox(height: 50),
-            Text('Settings ', style: TextStyle(color: Colors.black, fontSize: 22)),
-            SizedBox(height: 10),
-            Text('Gifts', style: TextStyle(color: Colors.black, fontSize: 22)),
-            SizedBox(height: 10),
-            Text('Messages', style: TextStyle(color: Colors.black, fontSize: 22)),
-            SizedBox(height: 10),
-            Text('Expenses', style: TextStyle(color: Colors.black, fontSize: 22)),
-            SizedBox(height: 10),
-            Text('Support', style: TextStyle(color: Colors.black, fontSize: 22)),
-            SizedBox(height: 10),
-            Text('Calculator', style: TextStyle(color: Colors.black, fontSize: 22)),
-            SizedBox(height: 10)
+            Image.asset(
+            AssetsPaths.MaxLogo, 
+            scale: MediaQuery.of(context).size.width / 80, 
+            alignment: Alignment.centerLeft
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () => null
+          ),
+          ListTile(
+            leading: Icon(FontAwesomeIcons.gifts),
+            title: Text('Gifts'),
+            onTap: () => null
+          ),
+          ListTile(
+            leading: Icon(Icons.notifications),
+            title: Text('Messages'),
+            onTap: () => null
+          ),
+          ListTile(
+            leading: Icon(FontAwesomeIcons.moneyBillWave),
+            title: Text('Expenses'),
+            onTap: () => null
+          ),
+          ListTile(
+            leading: Icon(FontAwesomeIcons.headset),
+            title: Text('Support'),
+            onTap: () => null
+          ),
+          ListTile(
+            leading: Icon(FontAwesomeIcons.calculator),
+            title: Text('Calculator'),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (BuildContext context) => Calc())
+              );
+            }
+          )
           ]
         )
       )
@@ -91,42 +120,36 @@ class _HomePageState extends State<HomePage> {
         elevation: 8,
         child: Wrap(children: <Widget>[
         Container(
-          padding: EdgeInsets.only(left: 16, right: 16, top: 48),
           child: Column(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  InkWell(
-                    child: Icon(
-                      Icons.menu, 
-                      color: Colors.black, 
-                      size: 40.0
-                    ),
+              Container(
+                child: AppBar(
+                  centerTitle: true,
+                  title: Text(AppVariables.ApplicationName),
+                  leading: InkWell(
+                    child: Icon(Icons.menu, color: Colors.black, size: 40.0),
                     onTap: () {
-                      setState(() {
-                        _isCollapsed = !_isCollapsed;
-                      });
-                    },
-                  ),
-                  Text(AppVariables.ApplicationName, style: TextStyle(fontSize: 20)),
-                  InkWell(
-                    child: Icon(
-                      Icons.credit_card, 
-                      color: Colors.black, 
-                      size: 40.0
-                    ),
-                    onTap: () {
-                     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CardsPage()));
+                      setState(() =>_isCollapsed = !_isCollapsed);
                     }
-                  )
-                ]
+                  ),
+                  actions: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.only(right: 10),
+                      child: InkWell(
+                        child: Icon(Icons.credit_card, color: Colors.black, size: 40.0),
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) => CardsPage())
+                          );
+                        }
+                      )
+                    )
+                  ]
+                ),
               ),
               Column(
                 children: <Widget>[
                   Card(
-                    margin: EdgeInsets.symmetric(vertical: 20.0),
                     color: Colors.white,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
@@ -144,15 +167,38 @@ class _HomePageState extends State<HomePage> {
                   )
                 ]
               ),
-              FloatingActionButton(
-                tooltip: 'Transfer money',
-                child: Icon(FontAwesomeIcons.coins),
-                backgroundColor: Theme.of(context).primaryColorDark,
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (BuildContext context) => SendMoney())
-                  );
-                }
+              // FloatingActionButton(
+              //   tooltip: 'Transfer money',
+              //   child: Icon(FontAwesomeIcons.coins),
+              //   backgroundColor: Theme.of(context).primaryColorDark,
+              //   onPressed: () {
+              //     Navigator.of(context).push(
+              //       MaterialPageRoute(builder: (BuildContext context) => SendMoney())
+              //     );
+              //   }
+              // )
+              Container(
+                margin: EdgeInsets.all(5),
+                child: FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (BuildContext context) => SendMoney())
+                    );
+                  },
+                  color: HexColor('#5dcbc7'),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal:MediaQuery.of(context).size.width * 0.22,
+                      vertical:MediaQuery.of(context).size.height * 0.02
+                      ),
+                    child: Text(
+                      'Transfer Money', 
+                      style: TextStyle(
+                        fontSize: 22
+                      )
+                    ),
+                  )
+                ),
               )
             ]
           )
@@ -216,8 +262,8 @@ class _HomePageState extends State<HomePage> {
                     : 
                       Icon(Icons.arrow_downward, color: Colors.red)
                     ,
-                    title: Text('₪ ${ data.amount.toString() }'),
-                    subtitle: Text(data.text)
+                    title: Text('₪ ${ data.amount.toString() }', style: TextStyle(fontSize: 22)),
+                    subtitle: Text(data.text, style: TextStyle(fontSize: 22))
                   );
                 }
               );

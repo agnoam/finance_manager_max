@@ -1,9 +1,13 @@
 import 'package:finance_manager/services/http.services.dart';
+import 'package:finance_manager/widgets/animatedbutton.widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:flutter/services.dart';
 
 class SendMoney extends StatefulWidget {
+  SendMoney({
+    Key key,
+  }) : super(key: key);
 
   @override
   _SendMoneyState createState() => _SendMoneyState();
@@ -24,6 +28,8 @@ class _SendMoneyState extends State<SendMoney> {
   FocusNode _third;
   FocusNode _last;
 
+  final TextEditingController _passwordController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -40,6 +46,8 @@ class _SendMoneyState extends State<SendMoney> {
     _sec.dispose();
     _third.dispose();
     _last.dispose();
+
+  _passwordController.dispose();
 
     super.dispose();
   }
@@ -157,7 +165,45 @@ class _SendMoneyState extends State<SendMoney> {
                         )
                       ),
                     )
-                  )
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  AnimatedButton(
+                    onTap: () async {
+                      bool transfered = await HttpServices.transferMoney(_destID, _amount, _currentPIN);
+                      if(transfered) {
+                        Dialogs.showAlert(
+                          context, 
+                          'Money Transfered successfuly', 
+                          onResolve: () => Navigator.of(context).pop()
+                        );
+                      } else {
+                        Dialogs.showAlert(
+                          context, 
+                          'Money transfer failed', 
+                          onResolve: () => Navigator.of(context).pop()
+                        );
+                      }
+                    },
+                    animationDuration: Duration(milliseconds: 2000),
+                    initialText: "Done",
+                    finalText: "Sent!",
+                    iconData: Icons.check,
+                    iconSize: 32.0,
+                    buttonStyle: ButtonStyle(
+                      primaryColor: HexColor('#ff6a64'),
+                      secondaryColor: Colors.white,
+                      elevation: 5,
+                      initialTextStyle: TextStyle(
+                        fontSize: 22.0,
+                        color: Colors.white,
+                      ),
+                      finalTextStyle: TextStyle(
+                        fontSize: 22.0,
+                        color: HexColor('#ff6a64'),
+                      ),
+                      borderRadius: 10.0,
+                    ),
+                  ),
                 ]
               )
             ]
@@ -241,54 +287,4 @@ class _SendMoneyState extends State<SendMoney> {
       )
     );
   }
-
-  //clear one pin back function
-  // _clearPin() {
-  //   if(pinIndex == 0) {
-  //     pinIndex = 0;
-  //   } else if(pinIndex == 4) {
-  //     _setPin(pinIndex, "");
-  //     currentPin[pinIndex-1] = "";
-  //     pinIndex--;
-  //   }else {
-  //     _setPin(pinIndex, "");
-  //     currentPin[pinIndex-1] = "";
-  //     pinIndex--;
-  //   }
-  // }
-  //set the number on the input according to the index
-  // _pinIndexSetup(String text) {
-  //   if(pinIndex == 0){
-  //     pinIndex = 1;
-  //   }else if(pinIndex < 4) {
-  //     pinIndex++;
-  //   }
-  //   _setPin(pinIndex, text);
-  //   currentPin[pinIndex-1] = text;
-  //   String strPin = "";
-  //   currentPin.forEach((e) {
-  //     strPin += e;
-  //   });
-  //   if(pinIndex == 4) {
-  //     print(strPin);
-  //   }
-
-  // }
-
-//   _setPin(int n, String text) {
-//     switch(n) {
-//       case 1:
-//         pinOneController.text = text;
-//       break;
-//       case 2:
-//         pinTwoController.text = text;
-//       break;
-//       case 3:
-//         pinThreeController.text = text;
-//       break;
-//       case 4:
-//         pinFourController.text = text;
-//       break;
-//     }
-//   }
 }

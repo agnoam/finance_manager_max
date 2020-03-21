@@ -15,6 +15,7 @@ class CreditCard extends StatefulWidget {
     @required this.cvvCode,
     this.height,
     this.width,
+    this.bgColor,
   })  :super(key: key);
 
   final String cardNumber;
@@ -23,6 +24,7 @@ class CreditCard extends StatefulWidget {
   final String cvvCode;
   final double height;
   final double width;
+  final Color bgColor;
 
   @override
   _CreditCard createState() => _CreditCard();
@@ -34,7 +36,8 @@ class _CreditCard extends State<CreditCard> {
     String expiryDate, 
     String cvvCode, 
     double height, 
-    double width
+    double width,
+    Color bgColor
   ){
     return Container(
       child: Stack(
@@ -51,7 +54,7 @@ class _CreditCard extends State<CreditCard> {
                   cvvCode: cvvCode,
                   textStyle:TextStyle(color: HexColor('#4F524D'),fontSize:20),
                   showBackView: false,
-                  cardbgColor: HexColor('#5dcbc7'),
+                  cardbgColor: bgColor,
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 25, left: 25), 
@@ -94,7 +97,8 @@ class _CreditCard extends State<CreditCard> {
       widget.expiryDate,
       widget.cvvCode,
       widget.height,
-      widget.width
+      widget.width,
+      widget.bgColor
     );
   }
 }
