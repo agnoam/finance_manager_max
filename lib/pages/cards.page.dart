@@ -11,16 +11,21 @@ class CardsPage extends StatefulWidget {
 }
 
 class _CardsPageState extends State<CardsPage> {
-  List<CreditCard> cards = [
-    CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
-      cardHolderName: 'Name', cvvCode: '343',height:160,width:350, bgColor: HexColor('FFE551')),
-    CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
-      cardHolderName: 'Name', cvvCode: '343',height:160,width:350, bgColor: HexColor('#5dcbc7')),
-    CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
-      cardHolderName: 'Name', cvvCode: '343',height:160,width:350, bgColor: HexColor('#ff6a64')),
-  ];
+
   
   Widget page(context) { 
+    
+    Size size = MediaQuery.of(context).size;
+
+    List<CreditCard> cards = [
+      CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
+        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('FFE551')),
+      CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
+        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('#5dcbc7')),
+      CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
+        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('#ff6a64')),
+    ];
+
     return Material(
       child: Container(
         color: Colors.cyan,

@@ -16,6 +16,7 @@ class SendMoney extends StatefulWidget {
 class _SendMoneyState extends State<SendMoney> {
   double _amount = 0;
   String _destID;
+  bool setanim = false;
 
   String _currentPIN = "";
   String _pinOne = "";
@@ -169,20 +170,22 @@ class _SendMoneyState extends State<SendMoney> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.05),
                   AnimatedButton(
                     onTap: () async {
-                      bool transfered = await HttpServices.transferMoney(_destID, _amount, _currentPIN);
-                      if(transfered) {
-                        Dialogs.showAlert(
-                          context, 
-                          'Money Transfered successfuly', 
-                          onResolve: () => Navigator.of(context).pop()
-                        );
-                      } else {
-                        Dialogs.showAlert(
-                          context, 
-                          'Money transfer failed', 
-                          onResolve: () => Navigator.of(context).pop()
-                        );
-                      }
+                      // bool transfered = await HttpServices.transferMoney(_destID, _amount, _currentPIN);
+                      // if(_destID.length > 0 && _amount.toString().length > 0 && _currentPIN.length > 0) {
+                      //   if(transfered) {
+                      //     Dialogs.showAlert(
+                      //       context, 
+                      //       'Money Transfered successfuly', 
+                      //       onResolve: () => Navigator.of(context).pop()
+                      //     );
+                      //   } else {
+                      //     Dialogs.showAlert(
+                      //       context, 
+                      //       'Money transfer failed', 
+                      //       onResolve: () => Navigator.of(context).pop()
+                      //     );
+                      //   }
+                      // }
                     },
                     animationDuration: Duration(milliseconds: 2000),
                     initialText: "Done",
