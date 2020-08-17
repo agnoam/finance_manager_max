@@ -33,17 +33,18 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Expanded(
-              flex: 3,
+              flex: 2,
               child: Container(
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal:30.0),
                 child: Align(
                   alignment: Alignment.bottomLeft,
                   child: Text(
-                    'KidiCard', 
+                    'Gard', 
                     style:TextStyle(
                       color:Colors.white,
                       fontWeight: FontWeight.bold,
-                      fontSize: 40.0,
+                      fontSize: 35.0,
+                      letterSpacing: 3.0
                     )
                   )
                 )
@@ -185,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
           onTap: () => Navigator.of(context).pop()
         ),
         backgroundColor: Colors.white,
-        title: Image.asset(AssetsPaths.MaxLogo, width: 70)
+        // title: Image.asset(AssetsPaths.MaxLogo, width: 70)
       ),
       body: Container(
         decoration: BoxDecoration(

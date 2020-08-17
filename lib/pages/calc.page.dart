@@ -126,7 +126,7 @@ class _CalcState extends State<Calc> {
     return Expanded(
       child: OutlineButton(
         padding: EdgeInsets.symmetric(horizontal:5.0, vertical: 25.0),
-        child: Text(buttonText, style:TextStyle(fontSize: 50.0, fontWeight: FontWeight.normal, color: Colors.white)),
+        child: Text(buttonText, style:TextStyle(fontSize: 30.0, fontWeight: FontWeight.normal, color: Colors.white)),
         color: HexColor('#ededed'),
         textColor: HexColor('#121237'),
         onPressed: () {
@@ -152,6 +152,7 @@ class _CalcState extends State<Calc> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Container(
         color: HexColor('#5dcbc7'),
         child: Column(
@@ -217,7 +218,6 @@ class _CalcState extends State<Calc> {
                         padding: EdgeInsets.symmetric(horizontal:5.0, vertical: 15.0),
                         child: IconButton(
                           onPressed: () {
-                            print('asfsa');
                             Navigator.of(context).push(
                               MaterialPageRoute(builder: (BuildContext context) => CardsPage())
                             );
@@ -230,7 +230,6 @@ class _CalcState extends State<Calc> {
                         color: HexColor('#ededed'),
                         textColor: HexColor('#121237'),
                         onPressed: () {
-                          print('asfsa');
                           Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) => CardsPage())
                           );

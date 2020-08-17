@@ -26,12 +26,12 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomPadding: true,
       backgroundColor: Colors.black,
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Container(
-          child: Image.asset(AssetsPaths.MaxLogo, width: 70.0, height:40.0)
+          // child: Image.asset(AssetsPaths.MaxLogo, width: 70.0, height:40.0)
         )
       ),
       body: Stack(
@@ -97,7 +97,7 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(height:20.0),
                   _buildPlain(
                     title: 'Address', 
-                    hint: 'Enter Address..',
+                    hint: 'Address...',
                     onChange: (newVal) => setState(() => _addressLine = newVal)
                   ),
                   SizedBox(height: 20.0,),

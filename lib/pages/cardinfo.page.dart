@@ -15,7 +15,7 @@ final String cardHolderName;
 final String cvvCode;
 
   const CardInfo({Key key, this.cardNumber='4448 3551 7873 1819', this.expiryDate='03/23',
-  this.cardHolderName='Yehuda Daniel', this.cvvCode='343'}) : super(key: key);
+  this.cardHolderName='Yehuda Daniel', this.cvvCode='343',}) : super(key: key);
 
   @override
   _CardInfoState createState() => _CardInfoState();
@@ -29,14 +29,14 @@ class _CardInfoState extends State<CardInfo> {
         children: <Widget>[ 
           Expanded(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[ 
                 CreditCard(
                   cardNumber: widget.cardNumber, 
                   expiryDate: widget.expiryDate, 
                   cardHolderName: widget.cardHolderName, 
                   cvvCode: widget.cvvCode,
-                  height: MediaQuery.of(context).size.height * 0.25,
+                  height: MediaQuery.of(context).size.height * 0.30,
                   width: MediaQuery.of(context).size.width * 8,
                   bgColor: HexColor('#ff6a64')
                 ),
@@ -143,27 +143,27 @@ class _CardInfoState extends State<CardInfo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.cyan,
-        centerTitle: true,
-        title: Row(
-          children:<Widget>[
-            Text('Cards'),
-            IconButton(
-              icon: Icon(Icons.settings),
-              onPressed: (){}
-            )
-          ]
-        ),
-        leading: GestureDetector(
-          child:Icon(Icons.arrow_back),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (BuildContext context) => CardsPage())
-            );
-          }
-        )
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.cyan,
+      //   centerTitle: true,
+      //   title: Row(
+      //     children:<Widget>[
+      //       Text('Cards'),
+      //       IconButton(
+      //         icon: Icon(Icons.settings),
+      //         onPressed: (){}
+      //       )
+      //     ]
+      //   ),
+      //   leading: GestureDetector(
+      //     child:Icon(Icons.arrow_back),
+      //     onTap: () {
+      //       Navigator.of(context).push(
+      //         MaterialPageRoute(builder: (BuildContext context) => CardsPage())
+      //       );
+      //     }
+      //   )
+      // ),
       body: Container(
         child: page(context),
       )
