@@ -7,5 +7,5 @@ class AssetsPaths {
 
 class AppVariables {
   static const int NumberOfCards = 3;
-  static const String ApplicationName = 'KiddiCard';
+  static const String ApplicationName = 'Gard';
 }

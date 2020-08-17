@@ -21,12 +21,12 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.cyan[400],
+      backgroundColor: HexColor('#3399ff'),
       body: Container(
         decoration: BoxDecoration(
           gradient: RadialGradient(
             radius: 0.5,
-            colors: [Colors.white24, Colors.cyan]
+            colors: [Colors.white24, HexColor('#3399ff')]
           )
         ),
         child: Column(
@@ -194,10 +194,10 @@ class _LoginPageState extends State<LoginPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Colors.cyan[400],
-              Colors.cyan[400],
-              Colors.cyan[200],
-              Colors.cyan[200],
+              HexColor('#3399ff'),
+              HexColor('#3399ff'),
+              HexColor('#3399ff'),
+              HexColor('#3399ff'),
             ],
             stops: [0.1, 0.4, 0.5, 0.7]
           )

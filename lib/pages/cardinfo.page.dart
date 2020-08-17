@@ -24,7 +24,7 @@ final String cvvCode;
 class _CardInfoState extends State<CardInfo> {
   Widget page(BuildContext context) { 
     return Material(
-      color: Colors.cyan,
+      color: HexColor('#3399ff'),
       child: Column(
         children: <Widget>[ 
           Expanded(

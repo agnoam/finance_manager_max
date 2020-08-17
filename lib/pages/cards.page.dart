@@ -28,7 +28,7 @@ class _CardsPageState extends State<CardsPage> {
 
     return Material(
       child: Container(
-        color: Colors.cyan,
+        color: HexColor('#3399ff'),
         padding: EdgeInsets.symmetric(vertical: MediaQuery.of(context).size.height * 0.05),
         child: ListView.builder(
           itemCount: AppVariables.NumberOfCards,

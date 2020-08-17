@@ -44,10 +44,10 @@ class _SignupPageState extends State<SignupPage> {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Colors.cyan[400],
-                  Colors.cyan[400],
-                  Colors.cyan[200],
-                  Colors.cyan[200],
+                  HexColor('#3399ff'),
+                  HexColor('#3399ff'),
+                  HexColor('#3399ff'),
+                  HexColor('#3399ff')
                 ],
                 stops: [0.1, 0.4, 0.5, 0.7],
               )
