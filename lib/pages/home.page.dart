@@ -12,19 +12,47 @@ import 'calc.page.dart';
 
 class HomePage extends StatefulWidget {
   // final Card; after choosing a card
-  HomePage({ Key key }) : super(key: key);
-  
+  HomePage({Key key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
+
 class _HomePageState extends State<HomePage> {
   bool _isCollapsed = true;
   double screenWidth, screenHeight;
   final Duration duration = Duration(milliseconds: 300);
-       
+
+  Widget balanceWidget;
+  Widget lastActions;
+
   @override
   void initState() {
     super.initState();
+    balanceWidget = _balanceWidget();
+    lastActions = _lastActions();
+  }
+
+  Future<bool> _onWillPop() async {
+    // TODO: make sure actually logged out
+    return (await showDialog(
+          context: context,
+          builder: (context) => new AlertDialog(
+            title: new Text('Are you sure?'),
+            content: new Text('Do you want to logout?'),
+            actions: <Widget>[
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: new Text('No'),
+              ),
+              new FlatButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: new Text('Yes'),
+              ),
+            ],
+          ),
+        )) ??
+        false;
   }
 
   @override
@@ -33,78 +61,63 @@ class _HomePageState extends State<HomePage> {
     screenHeight = size.height;
     screenWidth = size.width;
 
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
         statusBarIconBrightness: Brightness.light,
         systemNavigationBarColor: Theme.of(context).primaryColor,
-        systemNavigationBarIconBrightness: Brightness.light
-      )
-    );
+        systemNavigationBarIconBrightness: Brightness.light));
 
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          menu(context),
-           page(context)
-        ],
-      )
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: Scaffold(
+        body: Stack(
+          children: <Widget>[menu(context), page(context)],
+        ),
+      ),
     );
   }
 
   //builds the sidenav
-  Widget menu(context){
+  Widget menu(context) {
     return Padding(
-      padding: EdgeInsets.only(left: 16.0),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Image.asset(
-            AssetsPaths.MaxLogo, 
-            scale: MediaQuery.of(context).size.width / 80, 
-            alignment: Alignment.centerLeft
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () => null
-          ),
-          ListTile(
-            leading: Icon(FontAwesomeIcons.gifts),
-            title: Text('Gifts'),
-            onTap: () => null
-          ),
-          ListTile(
-            leading: Icon(Icons.notifications),
-            title: Text('Messages'),
-            onTap: () => null
-          ),
-          ListTile(
-            leading: Icon(FontAwesomeIcons.moneyBillWave),
-            title: Text('Expenses'),
-            onTap: () => null
-          ),
-          ListTile(
-            leading: Icon(FontAwesomeIcons.headset),
-            title: Text('Support'),
-            onTap: () => null
-          ),
-          ListTile(
-            leading: Icon(FontAwesomeIcons.calculator),
-            title: Text('Calculator'),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(builder: (BuildContext context) => Calc())
-              );
-            }
-          )
-          ]
-        )
-      )
-    );
+        padding: EdgeInsets.only(left: 16.0),
+        child: Align(
+            alignment: Alignment.centerLeft,
+            child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Image.asset(AssetsPaths.MaxLogo,
+                      scale: MediaQuery.of(context).size.width / 80,
+                      alignment: Alignment.centerLeft),
+                  ListTile(
+                      leading: Icon(Icons.settings),
+                      title: Text('Settings'),
+                      onTap: () => null),
+                  ListTile(
+                      leading: Icon(FontAwesomeIcons.gifts),
+                      title: Text('Gifts'),
+                      onTap: () => null),
+                  ListTile(
+                      leading: Icon(Icons.notifications),
+                      title: Text('Messages'),
+                      onTap: () => null),
+                  ListTile(
+                      leading: Icon(FontAwesomeIcons.moneyBillWave),
+                      title: Text('Expenses'),
+                      onTap: () => null),
+                  ListTile(
+                      leading: Icon(FontAwesomeIcons.headset),
+                      title: Text('Support'),
+                      onTap: () => null),
+                  ListTile(
+                      leading: Icon(FontAwesomeIcons.calculator),
+                      title: Text('Calculator'),
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => Calc()));
+                      })
+                ])));
   }
 
   //builds the whole page
@@ -116,57 +129,49 @@ class _HomePageState extends State<HomePage> {
       left: _isCollapsed ? 0 : 0.6 * screenWidth,
       right: _isCollapsed ? 0 : -0.4 * screenWidth,
       child: Material(
-        animationDuration: Duration(milliseconds: 3000),
-        elevation: 8,
-        child: Wrap(children: <Widget>[
-        Container(
-          child: Column(
-            children: <Widget>[
+          animationDuration: Duration(milliseconds: 3000),
+          elevation: 8,
+          child: Wrap(children: <Widget>[
+            Container(
+                child: Column(children: <Widget>[
               Container(
                 child: AppBar(
-                  centerTitle: true,
-                  title: Text(AppVariables.ApplicationName),
-                  leading: InkWell(
-                    child: Icon(Icons.menu, color: Colors.black, size: 40.0),
-                    onTap: () {
-                      setState(() =>_isCollapsed = !_isCollapsed);
-                    }
-                  ),
-                  actions: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(right: 10),
-                      child: InkWell(
-                        child: Icon(Icons.credit_card, color: Colors.black, size: 40.0),
+                    centerTitle: true,
+                    title: Text(AppVariables.ApplicationName),
+                    leading: InkWell(
+                        child:
+                            Icon(Icons.menu, color: Colors.black, size: 40.0),
                         onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) => CardsPage())
-                          );
-                        }
-                      )
-                    )
-                  ]
-                ),
+                          setState(() => _isCollapsed = !_isCollapsed);
+                        }),
+                    actions: <Widget>[
+                      Padding(
+                          padding: EdgeInsets.only(right: 10),
+                          child: InkWell(
+                              child: Icon(Icons.credit_card,
+                                  color: Colors.black, size: 40.0),
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        CardsPage()));
+                              }))
+                    ]),
               ),
-              Column(
-                children: <Widget>[
-                  Card(
+              Column(children: <Widget>[
+                Card(
                     color: Colors.white,
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       height: MediaQuery.of(context).size.height / 4,
-                      child: Center(child: _balanceWidget()),
+                      child: Center(child: balanceWidget),
                       padding: EdgeInsets.symmetric(
-                        vertical: MediaQuery.of(context).size.height * 0.08
-                      ),
-                    )
-                  ),
-                  Container(
+                          vertical: MediaQuery.of(context).size.height * 0.08),
+                    )),
+                Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height / 2,
-                    child: _lastActions()
-                  )
-                ]
-              ),
+                    child: lastActions)
+              ]),
               // FloatingActionButton(
               //   tooltip: 'Transfer money',
               //   child: Icon(FontAwesomeIcons.coins),
@@ -180,102 +185,84 @@ class _HomePageState extends State<HomePage> {
               Container(
                 margin: EdgeInsets.all(5),
                 child: FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (BuildContext context) => SendMoney())
-                    );
-                  },
-                  color: HexColor('#5dcbc7'),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal:MediaQuery.of(context).size.width * 0.22,
-                      vertical:MediaQuery.of(context).size.height * 0.02
-                      ),
-                    child: Text(
-                      'Transfer Money', 
-                      style: TextStyle(
-                        fontSize: 22
-                      )
-                    ),
-                  )
-                ),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => SendMoney()));
+                    },
+                    color: HexColor('#5dcbc7'),
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.22,
+                          vertical: MediaQuery.of(context).size.height * 0.02),
+                      child: Text('Transfer Money',
+                          style: TextStyle(fontSize: 22)),
+                    )),
               )
-            ]
-          )
-        )
-        ]
-      )
-      ),
+            ]))
+          ])),
     );
   }
 
   Widget _balanceWidget() {
     return FutureBuilder(
-      future: HttpServices.getBalance(),
-      builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
-        switch(snapshot.connectionState) {
-          case ConnectionState.active:
-          case ConnectionState.waiting:
-            return CircularProgressIndicator();
-            
-          case ConnectionState.none:
-          case ConnectionState.done:
-            if(snapshot.hasData) {
-              return Text(
-                '₪ ${ snapshot.data }',
-                style: TextStyle(
-                  fontSize: 35.0,
-                  color: Colors.black,
-                )
-              );
-            }
-            
-            return CircularProgressIndicator();
+        future: HttpServices.getBalance(),
+        builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return CircularProgressIndicator();
 
-          default:
-            return CircularProgressIndicator();
-        }
-      }
-    );
+            case ConnectionState.none:
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                return Text('₪ ${snapshot.data}',
+                    style: TextStyle(
+                      fontSize: 35.0,
+                      color: Colors.black,
+                    ));
+              }
+
+              return CircularProgressIndicator();
+
+            default:
+              return CircularProgressIndicator();
+          }
+        });
   }
 
   Widget _lastActions() {
     return FutureBuilder(
-      future: HttpServices.getRows(pageSize: 10),
-      builder: (BuildContext context, AsyncSnapshot<List<Page>> snapshot) {
-        switch(snapshot.connectionState) {
-          case ConnectionState.active:
-          case ConnectionState.waiting:
-            return CircularProgressIndicator();
+        future: HttpServices.getRows(pageSize: 10),
+        builder: (BuildContext context, AsyncSnapshot<List<Page>> snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.active:
+            case ConnectionState.waiting:
+              return CircularProgressIndicator();
 
-          case ConnectionState.none:
-          case ConnectionState.done:
-            if(snapshot.hasData) {
-              return ListView.builder(
-                itemCount: snapshot.data.length,
-                itemBuilder: (BuildContext context, int index) {
-                  Page data = snapshot.data[index];
+            case ConnectionState.none:
+            case ConnectionState.done:
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      Page data = snapshot.data[index];
 
-                  return ListTile(
-                    leading: data.amount > 0 ? 
-                      Icon(Icons.arrow_upward, color: Colors.green) 
-                    : 
-                      Icon(Icons.arrow_downward, color: Colors.red)
-                    ,
-                    title: Text('₪ ${ data.amount.toString() }', style: TextStyle(fontSize: 22)),
-                    subtitle: Text(data.text, style: TextStyle(fontSize: 22))
-                  );
-                }
-              );
-            }
-            
-            return CircularProgressIndicator();
+                      return ListTile(
+                          leading: data.amount > 0
+                              ? Icon(Icons.arrow_upward, color: Colors.green)
+                              : Icon(Icons.arrow_downward, color: Colors.red),
+                          title: Text('₪ ${data.amount.toString()}',
+                              style: TextStyle(fontSize: 22)),
+                          subtitle:
+                              Text(data.text, style: TextStyle(fontSize: 22)));
+                    });
+              }
 
-          default:
-            return CircularProgressIndicator();
-        }
-      }
-    );
+              return CircularProgressIndicator();
+
+            default:
+              return CircularProgressIndicator();
+          }
+        });
   }
-
 }
