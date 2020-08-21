@@ -1,7 +1,7 @@
 import 'package:finance_manager/pages/cards.page.dart';
 import 'package:finance_manager/pages/login.page.dart';
 import 'package:finance_manager/pages/sendmoney.page.dart';
-import 'package:finance_manager/services/http.services.dart' as http;
+import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/utils/constants.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:finance_manager/widgets/greeting.widgets.dart';
@@ -284,7 +284,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _balanceWidget() {
     return FutureBuilder(
-        future: http.HttpServices.getBalance(),
+        future: HttpServices.getBalance(),
         builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
@@ -311,8 +311,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _lastActions() {
     return FutureBuilder(
-        future: http.HttpServices.getRows(pageSize: 10),
-        builder: (BuildContext context, AsyncSnapshot<List<http.Page>> snapshot) {
+        future: HttpServices.getRows(pageSize: 10),
+        builder: (BuildContext context, AsyncSnapshot<List<Page>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
             case ConnectionState.waiting:
@@ -324,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      http.Page data = snapshot.data[index];
+                      Page data = snapshot.data[index];
 
                       return ListTile(
                           leading: data.amount > 0
