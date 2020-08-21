@@ -69,13 +69,17 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(height: 20.0,),
                   _buildPlain(
                     title: 'Email', 
-                    hint: 'Enter Email..',
+                    hint: 'Email..',
                     onChange: (newVal) => setState(() => _email = newVal)
                   ),
                   SizedBox(height: 20.0),
-                  _buildPassword(),
+                  _buildPassword(
+                    title:'Password',
+                    hint: 'Enter Password...',
+                    onChange: (String value){
+                    setState(() => _password = value);}),
                   SizedBox(height: 20.0),
-                  _buildPlain(
+                  _buildPassword(
                     title: 'Repeat', 
                     hint: 'Repeat password...',
                     onChange: (newVal) => setState(() => _repeat = newVal)
@@ -181,7 +185,7 @@ class _SignupPageState extends State<SignupPage> {
               alignment: Alignment.centerLeft,
               decoration: kBoxDecorationStyle,
               height: 60.0,
-              width: 160,
+              width: 110,
               child: TextFormField(
                 onChanged: onChange1,
                 keyboardType: TextInputType.text,
@@ -247,27 +251,25 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   // function for the label and input of the Password
-  Widget _buildPassword(){
+  Widget _buildPassword({String title, String hint, Function onChange}){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Password', style: kLabelStyle),
+        Text(title, style: kLabelStyle),
         SizedBox(height:10.0),
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            onChanged: (String value){
-              setState(() => _password = value);
-            },
+            onChanged: onChange,
             obscureText: true,
             style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(Icons.lock, color: Colors.black),
-              hintText: 'Enter Password...',
+              hintText: hint,
               hintStyle: kHintTextStyle,
             )
           )

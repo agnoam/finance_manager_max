@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                 padding: EdgeInsets.symmetric(vertical: 20.0, horizontal:30.0),
                 child: Align(
                   alignment: Alignment.bottomLeft,
-                  child: Text(
+                  /*child: Text(
                     'Gard', 
                     style:TextStyle(
                       color:Colors.white,
@@ -46,21 +46,22 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 35.0,
                       letterSpacing: 3.0
                     )
-                  )
+                  )*/
                 )
               )
             ),
             Expanded(
               flex: 9,
               child: Center(
-                child: Transform.rotate(
+                child: Image.asset(AssetsPaths.TransLogo,scale: MediaQuery.of(context).size.width / 200)
+                /*child: Transform.rotate(
                   angle: -30 * 3.141 / 180,
                   child: Icon(
                     Icons.credit_card,
                     color: Colors.white,
                     size: 240.0
                   )
-                )
+                )*/
               )
             ),
             Expanded(

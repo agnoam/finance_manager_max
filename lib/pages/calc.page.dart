@@ -1,11 +1,14 @@
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
+import 'package:finance_manager/widgets/menu.widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'cards.page.dart';
 
 class Calc extends StatefulWidget {
   @override
   _CalcState createState() => _CalcState();
+  
 }
 
 class Currencies {
@@ -24,6 +27,9 @@ class Currencies {
 
 
 class _CalcState extends State<Calc> {
+  bool _isCollapsed = true;
+  double screenWidth, screenHeight;
+  final Duration duration = Duration(milliseconds: 300);
   String _exchangeVal = "0";
   String _output = "0";
   double num1 = 0.0;
@@ -148,13 +154,11 @@ class _CalcState extends State<Calc> {
       _toCurrency = toCurrency;
     });
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  Widget page (context) {
+      return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(
-        color: HexColor('#5dcbc7'),
+        color: HexColor('#3399ff'),
         child: Column(
           children: <Widget>[
             Row(
@@ -195,7 +199,7 @@ class _CalcState extends State<Calc> {
                         items: _dropItems,
                         onChanged: onChangedDropdownItem,
                       ),
-                      SizedBox(height: 20.0),
+                      SizedBox(height: 15.0),
                       DropdownButton(
                         value: _toCurrency,
                         items: _dropItems,
@@ -292,6 +296,22 @@ class _CalcState extends State<Calc> {
           ],
         )
       )
+    );
+  }
+  @override
+  Widget build(BuildContext context) {
+
+    Size size = MediaQuery.of(context).size;
+    screenHeight = size.height;
+    screenWidth = size.width;
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+        statusBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: Theme.of(context).primaryColor,
+        systemNavigationBarIconBrightness: Brightness.light));
+
+    return Stack(
+         children: [Menu(context: context),page(context)],
     );
   }
 }

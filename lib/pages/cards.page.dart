@@ -19,11 +19,11 @@ class _CardsPageState extends State<CardsPage> {
 
     List<CreditCard> cards = [
       CreditCard(cardNumber: '1234 6546 9101 5445', expiryDate: '05/26', 
-        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('FFE551')),
+        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('FFE551'),infoPage: false),
       CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
-        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('#5dcbc7')),
+        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('#5dcbc7'), infoPage: false),
       CreditCard(cardNumber: '1234 5678 9101 2345', expiryDate: '03/23', 
-        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('#ff6a64')),
+        cardHolderName: 'Name', cvvCode: '343',height:size.height /3.33, width:size.width * 8, bgColor: HexColor('#ff6a64'), infoPage: false),
     ];
 
     return Material(
@@ -42,6 +42,7 @@ class _CardsPageState extends State<CardsPage> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       // appBar: AppBar(
       //   backgroundColor: Colors.cyan,
@@ -63,6 +64,7 @@ class _CardsPageState extends State<CardsPage> {
       //   ),
           
       // ),
+      
       body: Stack(
         children: <Widget> [
           page(context)

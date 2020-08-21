@@ -1,9 +1,11 @@
 import 'package:finance_manager/pages/cards.page.dart';
 import 'package:finance_manager/pages/login.page.dart';
 import 'package:finance_manager/pages/sendmoney.page.dart';
-import 'package:finance_manager/services/http.services.dart';
+import 'package:finance_manager/services/http.services.dart' as http;
 import 'package:finance_manager/utils/constants.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
+import 'package:finance_manager/widgets/greeting.widgets.dart';
+import 'package:finance_manager/widgets/menu.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +14,6 @@ import 'calc.page.dart';
 class HomePage extends StatefulWidget {
   // final Card; after choosing a card
   HomePage({Key key}) : super(key: key);
-
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -69,14 +70,15 @@ class _HomePageState extends State<HomePage> {
       onWillPop: _onWillPop,
       child: Scaffold(
         body: Stack(
-          children: <Widget>[menu(context), page(context)],
+         // children: <Widget>[menu(context), page(context)],
+         children: [Menu(context: context,),page(context)],
         ),
       ),
     );
   }
 
   //builds the sidenav
-  Widget menu(context) {
+  /*Widget menu(context) {
     return Padding(
         padding: EdgeInsets.only(left: 16.0),
         child: Align(
@@ -106,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                       title: Text('Privacy'),
                       onTap: () => null),
                 ])));
-  }
+  }*/
 
   //builds the whole page
   Widget page(context) {
@@ -153,7 +155,7 @@ class _HomePageState extends State<HomePage> {
                     color: HexColor('#3399ff'),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.height * 1,
                       child: Column(
                         children: <Widget>[
                           SizedBox(height:25),
@@ -169,31 +171,23 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Center(
+                                 //child: Image.asset(AssetsPaths.TransLogo,scale: MediaQuery.of(context).size.width / 30)
                                 child: Text(
                                   AppVariables.ApplicationName,
                                   style: TextStyle(
                                     letterSpacing: 9,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 25,
+                                    //fontWeight: FontWeight.bold,
                                     color: Colors.white
                                   ),
                                 ),
                               ),
                             ],
                           ),
+                          SizedBox(height: 10,),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                              child: Text(
-                                'בוקר טוב יהודה דניאל',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
-                              ),
-                            ),
+                            child: Greeting(name: "(שם)")
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -290,7 +284,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget _balanceWidget() {
     return FutureBuilder(
-        future: HttpServices.getBalance(),
+        future: http.HttpServices.getBalance(),
         builder: (BuildContext context, AsyncSnapshot<double> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
@@ -317,8 +311,8 @@ class _HomePageState extends State<HomePage> {
 
   Widget _lastActions() {
     return FutureBuilder(
-        future: HttpServices.getRows(pageSize: 10),
-        builder: (BuildContext context, AsyncSnapshot<List<Page>> snapshot) {
+        future: http.HttpServices.getRows(pageSize: 10),
+        builder: (BuildContext context, AsyncSnapshot<List<http.Page>> snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.active:
             case ConnectionState.waiting:
@@ -330,7 +324,7 @@ class _HomePageState extends State<HomePage> {
                 return ListView.builder(
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
-                      Page data = snapshot.data[index];
+                      http.Page data = snapshot.data[index];
 
                       return ListTile(
                           leading: data.amount > 0

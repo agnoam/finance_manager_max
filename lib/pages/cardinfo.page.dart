@@ -13,9 +13,9 @@ final String cardNumber;
 final String expiryDate;
 final String cardHolderName;
 final String cvvCode;
-
-  const CardInfo({Key key, this.cardNumber='4448 3551 7873 1819', this.expiryDate='03/23',
-  this.cardHolderName='Yehuda Daniel', this.cvvCode='343',}) : super(key: key);
+final Color cardColor;
+  const CardInfo({Key key, this.cardNumber, this.expiryDate,
+  this.cardHolderName, this.cvvCode, this.cardColor}) : super(key: key);
 
   @override
   _CardInfoState createState() => _CardInfoState();
@@ -38,7 +38,8 @@ class _CardInfoState extends State<CardInfo> {
                   cvvCode: widget.cvvCode,
                   height: MediaQuery.of(context).size.height * 0.30,
                   width: MediaQuery.of(context).size.width * 8,
-                  bgColor: HexColor('#ff6a64')
+                  bgColor: widget.cardColor,
+                  infoPage: true
                 ),
               ]
             ),
@@ -105,7 +106,7 @@ class _CardInfoState extends State<CardInfo> {
                           vertical:MediaQuery.of(context).size.height * 0.02
                           ),
                         child: Text(
-                          'Withraw From', 
+                          'Withdraw From', 
                           style: TextStyle(
                             fontSize: 22
                           ),
