@@ -6,6 +6,7 @@ import 'package:finance_manager/utils/flutter_ui_utils.dart';
 import 'package:finance_manager/widgets/creditcard.widgets.dart';
 
 import 'calc.page.dart';
+import 'oneuse.page.dart';
 
 
 class CardInfo extends StatefulWidget {
@@ -59,7 +60,7 @@ class _CardInfoState extends State<CardInfo> {
                           MaterialPageRoute(builder: (BuildContext context) => Calc())
                         );
                       },
-                      icon: Icon(Icons.account_balance_wallet),
+                      icon: Icon(Icons.account_balance_wallet, color: Colors.white,),
                       color: Colors.grey.withOpacity(0.1),
                       label: Padding(
                         padding: EdgeInsets.symmetric(
@@ -68,7 +69,8 @@ class _CardInfoState extends State<CardInfo> {
                         child: Text(
                           'Recharge Card', 
                           style: TextStyle(
-                            fontSize: 22
+                            fontSize: 22,
+                            color: Colors.white
                           ),
                         ),
                       )
@@ -79,7 +81,7 @@ class _CardInfoState extends State<CardInfo> {
                     width: double.infinity,
                     child: FlatButton.icon(
                       onPressed: () {},
-                      icon: Icon(Icons.account_balance_wallet),
+                      icon: Icon(Icons.account_balance_wallet, color: Colors.white,),
                       color: Colors.grey.withOpacity(0.1),
                       label: Padding(
                         padding: EdgeInsets.symmetric(
@@ -88,7 +90,8 @@ class _CardInfoState extends State<CardInfo> {
                         child: Text(
                           'Disable Card', 
                           style: TextStyle(
-                            fontSize: 22
+                            fontSize: 22,
+                            color: Colors.white
                           ),
                         ),
                       )
@@ -99,7 +102,7 @@ class _CardInfoState extends State<CardInfo> {
                     width: double.infinity,
                     child: FlatButton.icon(
                       onPressed: () {},
-                      icon: Icon(Icons.account_balance_wallet),
+                      icon: Icon(Icons.account_balance_wallet, color: Colors.white,),
                       color: Colors.grey.withOpacity(0.1),
                       label: Padding(
                         padding: EdgeInsets.symmetric(
@@ -108,7 +111,32 @@ class _CardInfoState extends State<CardInfo> {
                         child: Text(
                           'Withdraw From', 
                           style: TextStyle(
-                            fontSize: 22
+                            fontSize: 22,
+                            color: Colors.white
+                          ),
+                        ),
+                      )
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: FlatButton.icon(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) => Oneuse())
+                        );
+                      },
+                      icon: Icon(Icons.account_balance_wallet, color: Colors.white,),
+                      color: Colors.grey.withOpacity(0.1),
+                      label: Padding(
+                        padding: EdgeInsets.symmetric(
+                          vertical:MediaQuery.of(context).size.height * 0.02
+                          ),
+                        child: Text(
+                          'One-use number', 
+                          style: TextStyle(
+                            fontSize: 22,
+                            color: Colors.white
                           ),
                         ),
                       )
@@ -125,7 +153,8 @@ class _CardInfoState extends State<CardInfo> {
                           'Charge on Permission', 
                           style: TextStyle(
                             fontSize: 22,
-                            fontWeight: FontWeight.bold
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white
                           )
                         ), 
                         CrazySwitch()

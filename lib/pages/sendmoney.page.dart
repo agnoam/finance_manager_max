@@ -58,14 +58,14 @@ class _SendMoneyState extends State<SendMoney> {
     return Scaffold(
       body: Container(
         child: Container(
-          color: HexColor('#5dcbc7'),
+          color: HexColor('#3399ff'),
           child: Column(
             children: <Widget>[
               SizedBox(height: MediaQuery.of(context).size.height * 0.10),
               _buildPlain(
                 label: 'How much?',
                 onChange: (newVal) => setState(() => _amount = double.parse(newVal)),
-                typeis: TextInputType.number
+                typeis: TextInputType.number,
               ),
               SizedBox(height: MediaQuery.of(context).size.height * 0.05),
               _buildPlain(
@@ -135,16 +135,48 @@ class _SendMoneyState extends State<SendMoney> {
                     })
                   ),
                   SizedBox(height: MediaQuery.of(context).size.height * 0.15),
-                  RaisedButton(
-                    color: HexColor('#ff6a64'),
-                    onPressed: () async {
+                  // RaisedButton(
+                  //   color: HexColor('#ff6a64'),
+                  //   onPressed: () async {
+                  //     bool transfered = await HttpServices.transferMoney(_destID, _amount, _currentPIN);
+                  //     if(transfered) {
+                  //       Dialogs.showAlert(
+                  //         context, 
+                  //         'Money Transfered successfuly', 
+                  //         onResolve: () => Navigator.of(context).pop()
+                  //       );
+                  //     } else {
+                  //       Dialogs.showAlert(
+                  //         context, 
+                  //         'Money transfer failed', 
+                  //         onResolve: () => Navigator.of(context).pop()
+                  //       );
+                  //     }
+                  //   },
+                  //   child: Padding(
+                  //     padding: EdgeInsets.symmetric(
+                  //       horizontal:MediaQuery.of(context).size.width * 0.3,
+                  //       vertical:MediaQuery.of(context).size.height * 0.01
+                  //       ),
+                  //     child: Text(
+                  //       'Send', 
+                  //       style: TextStyle(
+                  //         color: Colors.white,
+                  //         fontSize: 30
+                  //       )
+                  //     ),
+                  //   )
+                  // ),
+                  AnimatedButton(
+                    onTap: () async {
                       bool transfered = await HttpServices.transferMoney(_destID, _amount, _currentPIN);
                       if(transfered) {
-                        Dialogs.showAlert(
-                          context, 
-                          'Money Transfered successfuly', 
-                          onResolve: () => Navigator.of(context).pop()
-                        );
+                        // Dialogs.showAlert(
+                        //   context, 
+                        //   'Money Transfered successfuly', 
+                        //   onResolve: () => Navigator.of(context).pop()
+                        // );
+                        print('success');
                       } else {
                         Dialogs.showAlert(
                           context, 
@@ -152,40 +184,6 @@ class _SendMoneyState extends State<SendMoney> {
                           onResolve: () => Navigator.of(context).pop()
                         );
                       }
-                    },
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal:MediaQuery.of(context).size.width * 0.3,
-                        vertical:MediaQuery.of(context).size.height * 0.01
-                        ),
-                      child: Text(
-                        'Send', 
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30
-                        )
-                      ),
-                    )
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                  AnimatedButton(
-                    onTap: () async {
-                      // bool transfered = await HttpServices.transferMoney(_destID, _amount, _currentPIN);
-                      // if(_destID.length > 0 && _amount.toString().length > 0 && _currentPIN.length > 0) {
-                      //   if(transfered) {
-                      //     Dialogs.showAlert(
-                      //       context, 
-                      //       'Money Transfered successfuly', 
-                      //       onResolve: () => Navigator.of(context).pop()
-                      //     );
-                      //   } else {
-                      //     Dialogs.showAlert(
-                      //       context, 
-                      //       'Money transfer failed', 
-                      //       onResolve: () => Navigator.of(context).pop()
-                      //     );
-                      //   }
-                      // }
                     },
                     animationDuration: Duration(milliseconds: 2000),
                     initialText: "Done",
@@ -230,7 +228,7 @@ class _SendMoneyState extends State<SendMoney> {
         cursorColor: HexColor('#ff6a64'),
         keyboardType: TextInputType.number,
         strutStyle: StrutStyle(fontSize: 30.0),
-        style: TextStyle(color:Colors.black, fontSize: 30),
+        style: TextStyle(color:Colors.white, fontSize: 30),
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -275,7 +273,7 @@ class _SendMoneyState extends State<SendMoney> {
         padding: EdgeInsets.symmetric(horizontal: _storeWidth * 0.05),
         child: TextField(
           keyboardType: typeis,
-          style: TextStyle(fontSize: 30.0),
+          style: TextStyle(fontSize: 30.0, color: Colors.white),
           cursorColor: HexColor('#ff6a64'),
           strutStyle: StrutStyle(fontSize: 30.0),
           decoration: InputDecoration(

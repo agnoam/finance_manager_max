@@ -69,17 +69,13 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(height: 20.0,),
                   _buildPlain(
                     title: 'Email', 
-                    hint: 'Email..',
+                    hint: 'Enter Email..',
                     onChange: (newVal) => setState(() => _email = newVal)
                   ),
                   SizedBox(height: 20.0),
-                  _buildPassword(
-                    title:'Password',
-                    hint: 'Enter Password...',
-                    onChange: (String value){
-                    setState(() => _password = value);}),
+                  _buildPassword(),
                   SizedBox(height: 20.0),
-                  _buildPassword(
+                  _buildPlain(
                     title: 'Repeat', 
                     hint: 'Repeat password...',
                     onChange: (newVal) => setState(() => _repeat = newVal)
@@ -87,7 +83,7 @@ class _SignupPageState extends State<SignupPage> {
                   SizedBox(height: 20.0),
                   _buildTwoInOne(
                     title: 'Location', 
-                    hint: ['Enter City...','Enter Country...'],
+                    hint: ['City...','Country...'],
                     onChange1: (newVal) => setState(() => _city = newVal),
                     onChange2: (newVal) => setState(() => _country = newVal)
                   ),
@@ -185,7 +181,7 @@ class _SignupPageState extends State<SignupPage> {
               alignment: Alignment.centerLeft,
               decoration: kBoxDecorationStyle,
               height: 60.0,
-              width: 110,
+              width: 160,
               child: TextFormField(
                 onChanged: onChange1,
                 keyboardType: TextInputType.text,
@@ -251,25 +247,27 @@ class _SignupPageState extends State<SignupPage> {
   }
 
   // function for the label and input of the Password
-  Widget _buildPassword({String title, String hint, Function onChange}){
+  Widget _buildPassword(){
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(title, style: kLabelStyle),
+        Text('Password', style: kLabelStyle),
         SizedBox(height:10.0),
         Container(
           alignment: Alignment.centerLeft,
           decoration: kBoxDecorationStyle,
           height: 60.0,
           child: TextFormField(
-            onChanged: onChange,
+            onChanged: (String value){
+              setState(() => _password = value);
+            },
             obscureText: true,
             style: TextStyle(color:Colors.black, fontFamily: 'Arial'),
             decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14.0),
               prefixIcon: Icon(Icons.lock, color: Colors.black),
-              hintText: hint,
+              hintText: 'Enter Password...',
               hintStyle: kHintTextStyle,
             )
           )

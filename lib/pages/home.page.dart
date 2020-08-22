@@ -4,8 +4,6 @@ import 'package:finance_manager/pages/sendmoney.page.dart';
 import 'package:finance_manager/services/http.services.dart';
 import 'package:finance_manager/utils/constants.dart';
 import 'package:finance_manager/utils/flutter_ui_utils.dart';
-import 'package:finance_manager/widgets/greeting.widgets.dart';
-import 'package:finance_manager/widgets/menu.widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/services.dart';
@@ -14,6 +12,7 @@ import 'calc.page.dart';
 class HomePage extends StatefulWidget {
   // final Card; after choosing a card
   HomePage({Key key}) : super(key: key);
+
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -70,15 +69,14 @@ class _HomePageState extends State<HomePage> {
       onWillPop: _onWillPop,
       child: Scaffold(
         body: Stack(
-         // children: <Widget>[menu(context), page(context)],
-         children: [Menu(context: context,),page(context)],
+          children: <Widget>[menu(context), page(context)],
         ),
       ),
     );
   }
 
   //builds the sidenav
-  /*Widget menu(context) {
+  Widget menu(context) {
     return Padding(
         padding: EdgeInsets.only(left: 16.0),
         child: Align(
@@ -88,9 +86,6 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Image.asset(AssetsPaths.MaxLogo,
-                  //     scale: MediaQuery.of(context).size.width / 80,
-                  //     alignment: Alignment.centerLeft),
                   ListTile(
                       leading: Icon(Icons.settings),
                       title: Text('Settings'),
@@ -108,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                       title: Text('Privacy'),
                       onTap: () => null),
                 ])));
-  }*/
+  }
 
   //builds the whole page
   Widget page(context) {
@@ -126,36 +121,12 @@ class _HomePageState extends State<HomePage> {
             Container(
                 child: Column(
                   children: <Widget>[
-              // Container(
-              //   child: AppBar(
-              //       centerTitle: true,
-              //       title: Text(AppVariables.ApplicationName),
-              //       leading: InkWell(
-              //           child:
-              //               Icon(Icons.menu, color: Colors.black, size: 40.0),
-              //           onTap: () {
-              //             setState(() => _isCollapsed = !_isCollapsed);
-              //           }),
-              //       actions: <Widget>[
-              //         Padding(
-              //             padding: EdgeInsets.only(right: 10),
-              //             child: InkWell(
-              //                 child: Icon(Icons.credit_card,
-              //                     color: Colors.black, size: 40.0),
-              //                 onTap: () {
-              //                   Navigator.of(context).push(MaterialPageRoute(
-              //                       builder: (BuildContext context) =>
-              //                           CardsPage()));
-              //                 }))
-              //       ]),
-              // ),
               Column(children: <Widget>[ // Is used as an appbar
                 Card(
                   elevation: 8,
                     color: HexColor('#3399ff'),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 1,
                       child: Column(
                         children: <Widget>[
                           SizedBox(height:25),
@@ -171,23 +142,31 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               Center(
-                                 //child: Image.asset(AssetsPaths.TransLogo,scale: MediaQuery.of(context).size.width / 30)
                                 child: Text(
                                   AppVariables.ApplicationName,
                                   style: TextStyle(
                                     letterSpacing: 9,
-                                    fontSize: 25,
-                                    //fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.white
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 10,),
                           Align(
                             alignment: Alignment.centerRight,
-                            child: Greeting(name: "(שם)")
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                              child: Text(
+                                'בוקר טוב יהודה דניאל',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white
+                                ),
+                              ),
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -235,7 +214,8 @@ class _HomePageState extends State<HomePage> {
                                 InkWell(
                                     child: Icon(FontAwesomeIcons.locationArrow, color: Colors.green, size: 40.0),
                                       onTap: () {
-                                        
+                                            Navigator.of(context).push(MaterialPageRoute(
+                                              builder: (BuildContext context) => SendMoney()));
                                       }
                                 ),
                               ],
@@ -251,32 +231,6 @@ class _HomePageState extends State<HomePage> {
                     child: lastActions
                 )
               ]),
-              // FloatingActionButton(
-              //   tooltip: 'Transfer money',
-              //   child: Icon(FontAwesomeIcons.coins),
-              //   backgroundColor: Theme.of(context).primaryColorDark,
-              //   onPressed: () {
-              //     Navigator.of(context).push(
-              //       MaterialPageRoute(builder: (BuildContext context) => SendMoney())
-              //     );
-              //   }
-              // )
-              Container(
-                margin: EdgeInsets.all(5),
-                // child: FlatButton(
-                //     onPressed: () {
-                //       Navigator.of(context).push(MaterialPageRoute(
-                //           builder: (BuildContext context) => SendMoney()));
-                //     },
-                //     color: HexColor('#5dcbc7'),
-                //     child: Padding(
-                //       padding: EdgeInsets.symmetric(
-                //           horizontal: MediaQuery.of(context).size.width * 0.22,
-                //           vertical: MediaQuery.of(context).size.height * 0.02),
-                //       child: Text('Transfer Money',
-                //           style: TextStyle(fontSize: 22)),
-                //     )),
-              )
             ]))
           ])),
     );
@@ -330,10 +284,28 @@ class _HomePageState extends State<HomePage> {
                           leading: data.amount > 0
                               ? Icon(Icons.arrow_upward, color: Colors.green)
                               : Icon(Icons.arrow_downward, color: Colors.red),
-                          title: Text('₪ ${data.amount.toString()}',
-                              style: TextStyle(fontSize: 22)),
-                          subtitle:
-                              Text(data.text, style: TextStyle(fontSize: 22)));
+                          title: Text(
+                            '₪ ${data.amount.toString()}',
+                              style: TextStyle(
+                                  fontSize: 24,
+                                  color: Colors.white
+                                )
+                          ),
+                          subtitle: Text(
+                                data.text, 
+                                style: TextStyle(
+                                  fontSize: 22,
+                                  color: Colors.white
+                                )
+                          ),
+                          // trailing: Text(
+                          //   '08/22',
+                          //   style: TextStyle(
+                          //     fontSize: 22,
+                          //     color: Colors.grey[350].withOpacity(0.7),
+                          //   )
+                          // ),
+                        );
                     });
               }
 
