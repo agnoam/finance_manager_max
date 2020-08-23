@@ -114,42 +114,42 @@ class _HomePageState extends State<HomePage> {
       left: _isCollapsed ? 0 : 0.6 * screenWidth,
       right: _isCollapsed ? 0 : -0.4 * screenWidth,
       child: Material(
-        color: HexColor('#3399ff'),
+          color: HexColor('#3399ff'),
           animationDuration: Duration(milliseconds: 3000),
           elevation: 8,
           child: Wrap(children: <Widget>[
             Container(
-                child: Column(
-                  children: <Widget>[
-              Column(children: <Widget>[ // Is used as an appbar
+                child: Column(children: <Widget>[
+              Column(children: <Widget>[
+                // Is used as an appbar
                 Card(
-                  elevation: 8,
+                    elevation: 8,
                     color: HexColor('#3399ff'),
                     child: Container(
                       width: MediaQuery.of(context).size.width,
                       child: Column(
                         children: <Widget>[
-                          SizedBox(height:25),
+                          SizedBox(height: 25),
                           Stack(
                             children: <Widget>[
                               Positioned(
                                 left: 0,
                                 child: InkWell(
-                                  child: Icon(Icons.menu, color: Colors.white, size: 40.0),
+                                    child: Icon(Icons.menu,
+                                        color: Colors.white, size: 40.0),
                                     onTap: () {
-                                      setState(() => _isCollapsed = !_isCollapsed);
-                                    }
-                                ),
+                                      setState(
+                                          () => _isCollapsed = !_isCollapsed);
+                                    }),
                               ),
                               Center(
                                 child: Text(
                                   AppVariables.ApplicationName,
                                   style: TextStyle(
-                                    letterSpacing: 9,
-                                    fontSize: 30,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                  ),
+                                      letterSpacing: 9,
+                                      fontSize: 30,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
                               ),
                             ],
@@ -157,14 +157,14 @@ class _HomePageState extends State<HomePage> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 10),
                               child: Text(
                                 'בוקר טוב יהודה דניאל',
                                 style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white
-                                ),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ),
                           ),
@@ -177,10 +177,9 @@ class _HomePageState extends State<HomePage> {
                                 child: Text(
                                   ' :יתרתך',
                                   style: TextStyle(
-                                    fontSize: 25.0,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
-                                  ),
+                                      fontSize: 25.0,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
                                 ),
                               ),
                             ],
@@ -191,45 +190,46 @@ class _HomePageState extends State<HomePage> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 InkWell(
-                                    child: Icon(Icons.credit_card, color: Colors.pinkAccent, size: 50.0),
-                                      onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                          CardsPage()));
-                                      }
-                                ),
+                                    child: Icon(Icons.credit_card,
+                                        color: Colors.pinkAccent, size: 50.0),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  CardsPage()));
+                                    }),
                                 InkWell(
-                                    child: Icon(FontAwesomeIcons.calculator, color: Colors.orange, size: 35.0),
-                                      onTap: () {
-                                        Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (BuildContext context) => Calc()));
-                                      }
-                                ),
+                                    child: Icon(FontAwesomeIcons.calculator,
+                                        color: Colors.orange, size: 35.0),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  Calc()));
+                                    }),
                                 InkWell(
-                                    child: Icon(FontAwesomeIcons.bell, color: Colors.white, size: 40.0),
-                                      onTap: () {
-                                        
-                                      }
-                                ),
+                                    child: Icon(FontAwesomeIcons.bell,
+                                        color: Colors.white, size: 40.0),
+                                    onTap: () {}),
                                 InkWell(
-                                    child: Icon(FontAwesomeIcons.locationArrow, color: Colors.green, size: 40.0),
-                                      onTap: () {
-                                            Navigator.of(context).push(MaterialPageRoute(
-                                              builder: (BuildContext context) => SendMoney()));
-                                      }
-                                ),
+                                    child: Icon(FontAwesomeIcons.locationArrow,
+                                        color: Colors.green, size: 40.0),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  SendMoney()));
+                                    }),
                               ],
                             ),
                           ),
                         ],
                       ),
-                    )
-                ),
+                    )),
                 Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.6,
-                    child: lastActions
-                )
+                    child: lastActions)
               ]),
             ]))
           ])),
@@ -281,31 +281,23 @@ class _HomePageState extends State<HomePage> {
                       Page data = snapshot.data[index];
 
                       return ListTile(
-                          leading: data.amount > 0
-                              ? Icon(Icons.arrow_upward, color: Colors.green)
-                              : Icon(Icons.arrow_downward, color: Colors.red),
-                          title: Text(
-                            '₪ ${data.amount.toString()}',
-                              style: TextStyle(
-                                  fontSize: 24,
-                                  color: Colors.white
-                                )
-                          ),
-                          subtitle: Text(
-                                data.text, 
-                                style: TextStyle(
-                                  fontSize: 22,
-                                  color: Colors.white
-                                )
-                          ),
-                          // trailing: Text(
-                          //   '08/22',
-                          //   style: TextStyle(
-                          //     fontSize: 22,
-                          //     color: Colors.grey[350].withOpacity(0.7),
-                          //   )
-                          // ),
-                        );
+                        leading: data.amount > 0
+                            ? Icon(Icons.arrow_upward, color: Colors.green)
+                            : Icon(Icons.arrow_downward, color: Colors.red),
+                        title: Text('₪ ${data.amount.toString()}',
+                            style:
+                                TextStyle(fontSize: 24, color: Colors.white)),
+                        subtitle: Text(data.text,
+                            style:
+                                TextStyle(fontSize: 22, color: Colors.white)),
+                        // trailing: Text(
+                        //   '08/22',
+                        //   style: TextStyle(
+                        //     fontSize: 22,
+                        //     color: Colors.grey[350].withOpacity(0.7),
+                        //   )
+                        // ),
+                      );
                     });
               }
 
