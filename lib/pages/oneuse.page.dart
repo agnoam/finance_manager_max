@@ -132,7 +132,7 @@ extension RandomOfDigits on Random {
     Random rnd = new Random();
     double next = rnd.nextDouble() * pow(10, digitCount - 1);
 
-    while (next < pow(10, 15)) next *= 10;
+    while (next < pow(10, digitCount - 1)) next *= 10;
     return next.round();
   }
 }
